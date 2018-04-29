@@ -96,7 +96,7 @@ Developers that move faster than average can go ahead and complete as much exerc
 
 2. The IDE to use is [Eclipse for Java Developers](http://www.eclipse.org/downloads/). [JEE version Recommended](http://www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/mars1).
 
-3. Skype Account + headset (audio calls)
+3. Skype Account or Google Hangouts + headset (audio calls)
 
 4. Create your own [GitHub](https://github.com/) account. Follow this [guideline](https://help.github.com/articles/set-up-git) to setup your account. Also you can read further about Git in [Try Git](https://try.github.io/levels/1/challenges/1) or [Learn Git Branching](http://pcottle.github.io/learnGitBranching/)
 
@@ -116,7 +116,7 @@ The boot camp is organized in the following way:
 
 3. One boot camp chat will be created for feedback and technical assistance:
 
-    Bootcamp JAVA 2016 - ALL
+    Bootcamp JAVA 2018 - ALL
 Every person participating in the bootcamp is present here (students and tutors). Here is the place to ask for technical assistance!
 
 4. [Team play](http://www.dummies.com/how-to/content/ten-qualities-of-an-effective-team-player.html) is encouraged but the work will be evaluated per person.
@@ -380,6 +380,8 @@ Commit your practice code.
 1. Expose the shopping cart created in the topic 3.
 2. Write the swagger file for point 1.
 3. Create and document with swagger a REST API to register users. The API must provide: add, delete, update and find by name and find by nickname operations. Note that the username must be unique.
+4. Configure a Continuous Integration Server to track the changes [https://travis-ci.org/] [https://docs.travis-ci.com/user/getting-started/] [https://github.com/mbonaci/mbo-storm/wiki/Integrate-Travis-CI-with-your-GitHub-repo]
+
 
 ##### Key Points:
 
