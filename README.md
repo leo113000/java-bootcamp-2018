@@ -238,6 +238,7 @@ Commit your practice code.
   * Post new entry
   * Delete existing entry
   * Show 10 most recent entries
+3. Ensure your code has at least 70% Code Coverage  [https://en.wikipedia.org/wiki/Code_coverage]
  
 ##### Key Points:
 
@@ -380,8 +381,6 @@ Commit your practice code.
 1. Expose the shopping cart created in the topic 3.
 2. Write the swagger file for point 1.
 3. Create and document with swagger a REST API to register users. The API must provide: add, delete, update and find by name and find by nickname operations. Note that the username must be unique.
-4. Configure a Continuous Integration Server to track the changes [https://travis-ci.org/] [https://docs.travis-ci.com/user/getting-started/] [https://github.com/mbonaci/mbo-storm/wiki/Integrate-Travis-CI-with-your-GitHub-repo]
-
 
 ##### Key Points:
 
@@ -403,6 +402,14 @@ Create a functional shopping cart (just REST api). The minimum features to be co
   - Save Cart.
   - Buy products.
 
+Implements using the following  
+
+- Configure a Continuous Integration Server to track the changes [https://travis-ci.org/] [https://docs.travis-ci.com/user/getting-started/] [https://github.com/mbonaci/mbo-storm/wiki/Integrate-Travis-CI-with-your-GitHub-repo]
+- Configure via maven Cobertura plugin to ensure the project has 80% Code Coverage [http://www.mojohaus.org/cobertura-maven-plugin/]
+
+
 The solution must use MongoDB or MySql as repository as well as Spring Boot and swagger for REST documentation.
+
+
 
 Thanks for reading!
