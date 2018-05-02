@@ -22,7 +22,6 @@ public class MySQLConnectionBuilder implements SQLConnectionBuilder {
 	}
 
 	/**
-	 *
 	 * @return the connection object
 	 */
 	@Override public SQLConnection getSQLConnection() {

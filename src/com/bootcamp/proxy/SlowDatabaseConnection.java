@@ -7,7 +7,7 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class SlowDatabaseConnection {
 	public SlowDatabaseConnection() throws InterruptedException {
-		Thread.sleep(ThreadLocalRandom.current().nextInt(2000,5000));
+		Thread.sleep(ThreadLocalRandom.current().nextInt(2000, 5000));
 		System.out.println("Connection with Slow database was successful");
 	}
 }

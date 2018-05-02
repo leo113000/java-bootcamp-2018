@@ -5,9 +5,11 @@ package com.bootcamp.abstractFactory.Connection;
  */
 public abstract class AbstractSQLConnection {
 	private String connectionType;
+
 	public AbstractSQLConnection(String connectionType) {
 		this.connectionType = connectionType;
 	}
+
 	public String getConnectionType() {
 		return connectionType;
 	}

@@ -7,7 +7,6 @@ public class SQLConnectionDirector {
 	private SQLConnectionBuilder builder;
 
 	/**
-	 *
 	 * @param builder concrete builder
 	 */
 	public SQLConnectionDirector(SQLConnectionBuilder builder) {
@@ -17,15 +16,14 @@ public class SQLConnectionDirector {
 	/**
 	 * This method calls the methods from the builder
 	 */
-	public void constructSQLConnection(){
+	public void constructSQLConnection() {
 		this.builder.buildName();
 	}
 
 	/**
-	 *
 	 * @return the connection
 	 */
-	public SQLConnection getConnection(){
+	public SQLConnection getConnection() {
 		return this.builder.getSQLConnection();
 	}
 

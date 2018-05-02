@@ -9,7 +9,7 @@ public class ProxySlowDatabaseConnection {
 	}
 
 	public SlowDatabaseConnection getConnection() {
-		if(this.slowConnection == null) {
+		if (this.slowConnection == null) {
 			try {
 				this.slowConnection = new SlowDatabaseConnection();
 			} catch (InterruptedException e) {
