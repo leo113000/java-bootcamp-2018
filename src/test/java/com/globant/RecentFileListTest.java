@@ -24,29 +24,31 @@ public class RecentFileListTest {
 	}
 
 	@Test
-	public void emptyListWhenStarts(){
+	public void whenNoFileHasBeenOpenedThenIsEmptyShouldReturnTrue(){
 		assertTrue(rfl.isEmpty());
 	}
 
 	@Test
-	public void openFile() throws IOException {
+	public void whenTheFirstFileIsOpenedThenItWillBeTheFirstFileInTheList() throws IOException {
 		final File aFile = folder.newFile("file.txt");
 		rfl.add(aFile);
-		File f = rfl.getLastOpen();
+		File f = rfl.getMostRecentOpenedFile();
 		assertEquals(aFile,f);
 	}
 
 	@Test
-	public void openAlreadyOpenedFile() throws IOException {
+	public void whenOpenAnAlreadyOpenedFileThenTheFileIsBumpedToTheTop() throws IOException {
 		final File aFile = folder.newFile("file.txt");
 		rfl.add(aFile);
-		final File aFileCopy = new File("file.txt");
+		final File bFile = folder.newFile("bfile.txt");
+		rfl.add(bFile);
+		final File aFileCopy = new File(folder.getRoot()+"\\file.txt");
 		rfl.add(aFileCopy);
-		assertEquals(aFile,rfl.getLastOpen());
+		assertEquals(aFile,rfl.getMostRecentOpenedFile());
 	}
 
 	@Test
-	public void testFullList() throws IOException {
+	public void whenTheListIsFullThenWontAddMoreFiles() throws IOException {
 		for(int i = 0 ; i<20 ; i++){
 			rfl.add(folder.newFile("file" + (i+1) + ".txt"));
 		}
@@ -54,11 +56,12 @@ public class RecentFileListTest {
 	}
 
 	@Test
-	public void testBehaviourWhenFullList() throws IOException {
+	public void whenTheListIsFullThenStartsRemovingTheOldestFiles() throws IOException {
 		for(int i = 0 ; i<16 ; i++){
 			rfl.add(folder.newFile("file" + (i+1) + ".txt"));
 		}
-		assertEquals(new File("file2.txt"),rfl.getOlder());
+		assertEquals(new File(folder.getRoot()+"\\file2.txt"),
+				rfl.getOlder());
 	}
 
 }
