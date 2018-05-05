@@ -1,7 +1,6 @@
 package com.globant;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.List;
@@ -16,62 +15,58 @@ public class BlogTest {
 
 	private Blog blog;
 
-	@Before
-	public void setUp(){
+	@Before public void setUp() {
 		this.blog = new Blog();
 	}
 
-	@Test
-	public void whenTheBlogStartsThenIsEmpty(){
+	@Test public void whenTheBlogStartsThenIsEmpty() {
 		assertTrue(blog.isEmpty());
 	}
 
-	@Test
-	public void WhenAddNewPostThenAddAtTheBeginning(){
+	@Test public void WhenAddNewPostThenAddAtTheBeginning() {
 		Post p = mock(Post.class);
 		this.blog.addPost(p);
-		assertEquals(p,this.blog.getLastPost());
+		assertEquals(p, this.blog.getLatestPost());
 	}
 
-	@Test
-	public void whenTryToDeleteAPostThatNotExistsThenReturnFalse(){
+	@Test public void whenTryToDeleteAPostThatNotExistsThenReturnFalse() {
 		assertFalse(this.blog.deleteByTitle("non-existing title"));
 	}
 
-	@Test
-	public void whenTryToDeleteAPostAndExistsThenReturnTrue(){
+	@Test public void whenTryToDeleteAPostAndExistsThenReturnTrue() {
 		String title = "mocked title";
 		Post p = mock(Post.class);
 		when(p.getTitle()).thenReturn(title);
 		this.blog.addPost(p);
 		assertTrue(this.blog.deleteByTitle(title));
 	}
-	@Test
-	public void givenEmptyBlogWhenTryToGetTenLatestPostsThenReturnEmptyList(){
-		List latestTen = this.blog.getLatestTen();
-		assertEquals(0,latestTen.size());
+
+	@Test public void givenEmptyBlogWhenTryToGetTenLatestPostsThenReturnEmptyList() {
+		List latestTen = this.blog.getLatestTenPosts();
+		assertEquals(0, latestTen.size());
 	}
 
-	@Test
-	public void givenLessThanTenPostsBlogWhenTryToGetTenLatestPostsThenReturnListWithAll(){
+	@Test public void givenLessThanTenPostsBlogWhenTryToGetTenLatestPostsThenReturnListWithAll() {
 		final int postQty = 5;
 		this.addPosts(postQty);
-		List latest = this.blog.getLatestTen();
-		assertEquals(postQty,latest.size());
+		List latest = this.blog.getLatestTenPosts();
+		assertEquals(postQty, latest.size());
 	}
 
-	@Test
-	public void givenPlentyOfPostsBlogWhenTryToGetTenLatestPostThenReturnListWithLatestTen(){
+	@Test public void givenPlentyOfPostsBlogWhenTryToGetTenLatestPostThenReturnListWithLatestTen() {
 		final int postQty = 12;
 		this.addPosts(postQty);
-		List latest = this.blog.getLatestTen();
-		assertEquals(10,latest.size());
+		List latest = this.blog.getLatestTenPosts();
+		assertEquals(10, latest.size());
 	}
 
-	private void addPosts(int postQty){
-		for( int i = 0; i<postQty; i++){
+	/**
+	 * @param postQty the quantity of mocked posts to be added to the blog
+	 */
+	private void addPosts(int postQty) {
+		for (int i = 0; i < postQty; i++) {
 			Post p = mock(Post.class);
-			when(p.getTitle()).thenReturn("title " + i+1);
+			when(p.getTitle()).thenReturn("title " + i + 1);
 			this.blog.addPost(p);
 		}
 	}
