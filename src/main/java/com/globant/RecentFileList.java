@@ -22,7 +22,6 @@ public class RecentFileList {
 	}
 
 	/**
-	 *
 	 * @return true if the collection has no elements
 	 */
 	public Boolean isEmpty() {
@@ -33,22 +32,22 @@ public class RecentFileList {
 	 * - Move the file at the beginning if already exists on the list
 	 * - Put the file at the beginning and deletes the oldest if the list is full
 	 * - Add the file if nothing of what previously mentioned happens
+	 *
 	 * @param file
 	 */
 	public void add(File file) {
-		if(this.openFiles.contains(file)){
+		if (this.openFiles.contains(file)) {
 			this.openFiles.remove(file);
 			this.openFiles.addFirst(file);
-		}else if(this.openFiles.size() == LIMIT){
+		} else if (this.openFiles.size() == LIMIT) {
 			this.openFiles.pollLast();
 			this.openFiles.addFirst(file);
-		}else{
+		} else {
 			this.openFiles.addFirst(file);
 		}
 	}
 
 	/**
-	 *
 	 * @return the first element on the list
 	 */
 	public File getMostRecentOpenedFile() {
@@ -56,7 +55,6 @@ public class RecentFileList {
 	}
 
 	/**
-	 *
 	 * @return the last element on the list
 	 */
 	public File getOlder() {
@@ -64,7 +62,6 @@ public class RecentFileList {
 	}
 
 	/**
-	 *
 	 * @return the quantity of elements on the list
 	 */
 	public int size() {
