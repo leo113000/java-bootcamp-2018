@@ -13,7 +13,8 @@ public class ShoppingCart {
 	private Long id;
 	private List<Product> productList;
 
-	public ShoppingCart() {
+	public ShoppingCart(Long id) {
+		this.id = id;
 		this.productList = new ArrayList<>();
 	}
 
