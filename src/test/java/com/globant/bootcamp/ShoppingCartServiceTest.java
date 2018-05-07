@@ -18,8 +18,9 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 public class ShoppingCartServiceTest {
 
-	ShoppingCartService shoppingCartService;
-	final int MOCKED_PRODUCTS_QUANTITY = 3;
+	private ShoppingCartService shoppingCartService;
+	private final int MOCKED_PRODUCTS_QUANTITY = 3;
+
 	@Before
 	public void contextLoads(){
 		ShoppingCartRepository repo = new ShoppingCartRepository();
@@ -31,18 +32,14 @@ public class ShoppingCartServiceTest {
 
 	private ShoppingCart getMockedCart(long id) {
 
-		List <Product> products = new ArrayList<>();
+		ShoppingCart sp = new ShoppingCart(id);
 
 		for(int i = 0; i<MOCKED_PRODUCTS_QUANTITY ; i++){
 			Product m = mock(Product.class);
-			products.add(m);
+			sp.addProduct(m);
 			when(m.getId()).thenReturn((long)i+1);
 			when(m.getName()).thenReturn("Play Station" + (i+1));
 		}
-
-		ShoppingCart sp = mock(ShoppingCart.class);
-		when(sp.getAllProducts()).thenReturn(products);
-
 		return sp;
 	}
 

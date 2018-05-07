@@ -21,7 +21,7 @@ public class ShoppingCartTest {
 
 	@Before
 	public void contextLoads(){
-		this.shoppingCart = new ShoppingCart();
+		this.shoppingCart = new ShoppingCart((long) 1);
 	}
 
 	@Test

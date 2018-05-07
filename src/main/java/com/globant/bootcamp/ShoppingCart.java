@@ -36,7 +36,6 @@ public class ShoppingCart {
 		if(index>=0){
 			this.productList.remove(index);
 		}
-
 	}
 
 	public List <Product> getAllProducts(){
