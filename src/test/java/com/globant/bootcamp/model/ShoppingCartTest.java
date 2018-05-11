@@ -1,36 +1,29 @@
-package com.globant.bootcamp;
+package com.globant.bootcamp.model;
 
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Iterator;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class ShoppingCartTest {
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+@RunWith(SpringRunner.class) @SpringBootTest public class ShoppingCartTest {
 	private ShoppingCart shoppingCart;
 
-	@Before
-	public void contextLoads(){
-		this.shoppingCart = new ShoppingCart((long) 1);
+	@Before public void contextLoads() {
+		this.shoppingCart = new ShoppingCart("1");
 	}
 
-	@Test
-	public void whenShoppingCartIsCreatedThenIsEmpty(){
+	@Test public void whenShoppingCartIsCreatedThenIsEmpty() {
 		assertTrue(shoppingCart.getAllProducts().isEmpty());
 	}
 
-	@Test
-	public void givenAShoppingCartWithProductsWhenGetAllTheProductsThenReturnAListOfProducts(){
+	@Test public void givenAShoppingCartWithProductsWhenGetAllTheProductsThenReturnAListOfProducts() {
 		Product a = mock(Product.class);
 		Product b = mock(Product.class);
 
@@ -39,21 +32,19 @@ public class ShoppingCartTest {
 
 		Iterator<Product> iter = shoppingCart.getAllProducts().iterator();
 
-		assertEquals(a,iter.next());
-		assertEquals(b,iter.next());
+		assertEquals(a, iter.next());
+		assertEquals(b, iter.next());
 	}
 
-	@Test
-	public void givenAShoppingCartWithProductsWhenISendTheIdThenReturnTheDesiredProduct(){
+	@Test public void givenAShoppingCartWithProductsWhenISendTheIdThenReturnTheDesiredProduct() {
 		Product a = mock(Product.class);
 		shoppingCart.addProduct(a);
 		Long id = (long) 1;
 		when(a.getId()).thenReturn(id);
-		assertEquals(a,shoppingCart.getProductById(id));
+		assertEquals(a, shoppingCart.getProductById(id));
 	}
 
-	@Test
-	public void givenACartWithProductsWhenCallEmptyMethodThenTheCartIsEmpty(){
+	@Test public void givenACartWithProductsWhenCallEmptyMethodThenTheCartIsEmpty() {
 		Product a = mock(Product.class);
 		shoppingCart.addProduct(a);
 		assertFalse(shoppingCart.getAllProducts().isEmpty());
@@ -61,8 +52,7 @@ public class ShoppingCartTest {
 		assertTrue(shoppingCart.getAllProducts().isEmpty());
 	}
 
-	@Test
-	public void givenAShoppingCartWithProductsWhenISendTheIdThenDeleteFromTheListTheDesiredProduct(){
+	@Test public void givenAShoppingCartWithProductsWhenISendTheIdThenDeleteFromTheListTheDesiredProduct() {
 		Product a = mock(Product.class);
 		Product b = mock(Product.class);
 
@@ -74,12 +64,8 @@ public class ShoppingCartTest {
 
 		shoppingCart.removeProductById(id);
 
-		assertEquals(1,shoppingCart.getAllProducts().size());
+		assertEquals(1, shoppingCart.getAllProducts().size());
 		assertFalse(shoppingCart.getAllProducts().contains(a));
 	}
-
-
-
-
 
 }
