@@ -1,7 +1,9 @@
 package com.globant;
 
-import javax.xml.transform.Result;
-import java.sql.*;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class HighSchoolMySQL {
 	/**
