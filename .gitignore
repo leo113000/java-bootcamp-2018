@@ -24,3 +24,4 @@ logs/
 .settings
 
 *.log
+runMongo.bat
