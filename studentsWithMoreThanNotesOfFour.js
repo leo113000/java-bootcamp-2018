@@ -15,7 +15,7 @@ function studentsWithMoreThanNotesOfFour(course_name){
 	}).pretty();
 }
 
-studentsWithMoreThanNotesOfFour("Programacion");
+studentsWithMoreThanNotesOfFour("Base de datos").count();
 
 
 
