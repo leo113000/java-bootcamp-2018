@@ -1,11 +1,12 @@
 package com.globant.bootcamp.persistence;
 
 import com.globant.bootcamp.model.User;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
+@Repository
 public class UserRepository extends HashMap<Long, User> implements iRepository<Long, User> {
 
 	public List<User> getAll() {
@@ -19,7 +20,18 @@ public class UserRepository extends HashMap<Long, User> implements iRepository<L
 	public User getByUsername(String username) {
 		User result = null;
 		for (User u : this.values()) {
-			if (u.getUsername() == username) {
+			if (u.getUsername()!= null && u.getUsername().equals(username)) {
+				result = u;
+				break;
+			}
+		}
+		return result;
+	}
+
+	public User getByName(String name) {
+		User result = null;
+		for (User u : this.values()) {
+			if (u.getName().equals(name)) {
 				result = u;
 				break;
 			}
@@ -33,6 +45,7 @@ public class UserRepository extends HashMap<Long, User> implements iRepository<L
 
 	public User save(User user) {
 		Long id = (long) this.size() + 1;
+		user.setId(id);
 		this.put(id, user);
 		return user;
 	}

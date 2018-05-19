@@ -3,12 +3,13 @@ package com.globant.bootcamp.service;
 import com.globant.bootcamp.model.User;
 import com.globant.bootcamp.persistence.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 import java.util.List;
-
+@Service
 public class UserService {
-
-	@Autowired UserRepository userRepository;
+	@Autowired private UserRepository userRepository;
 
 	/**
 	 * Constructor with one param
@@ -21,11 +22,21 @@ public class UserService {
 
 	/**
 	 * Save the User in the Repository
-	 *
-	 * @param user the user's model to be saved
+	 * @param email
+	 * @param username
+	 * @param password
 	 */
-	public void register(User user) {
-		this.userRepository.save(user);
+	public String register(String email, String name,String username,String password) {
+		String result;
+
+		if(getByUsername(username) != null){
+			result = "The username is already taken";
+		}else{
+			this.userRepository.save(new User(email, name, username, password));
+			result = "User Registered!";
+		}
+
+		return result;
 	}
 
 	/**
@@ -56,13 +67,23 @@ public class UserService {
 	}
 
 	/**
+	 * Retrieves an User by name
+	 *
+	 * @param name
+	 * @return User
+	 */
+	public User getByName(String name) {
+		return this.userRepository.getByName(name);
+	}
+
+	/**
 	 * Updates an user by id
 	 *
 	 * @param id of the User
 	 * @param u  the new User Model
 	 */
-	public void updateById(Long id, User u) {
-		this.userRepository.put(id, u);
+	public void updateById(Long id, String email, String name,String username,String password) {
+		this.userRepository.put(id, new User(email,name,username, password));
 	}
 
 	/**

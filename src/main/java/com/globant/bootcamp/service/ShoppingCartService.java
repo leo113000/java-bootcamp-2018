@@ -6,7 +6,7 @@ import com.globant.bootcamp.persistence.ShoppingCartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+
 
 @Service public class ShoppingCartService {
 
@@ -26,12 +26,13 @@ import java.util.Optional;
 	 * @return Shopping Cart or null if not exists a matching id
 	 */
 	public ShoppingCart getShoppingCart(String cartId) {
-		Optional<ShoppingCart> optSp = Optional.ofNullable(this.shoppingCartRepository.getById(cartId));
-		if (!optSp.isPresent()) {
-			optSp = Optional.of(shoppingCartRepository.save(new ShoppingCart(cartId)));
+		ShoppingCart sp = this.shoppingCartRepository.getById(cartId);
+		if (sp == null) {
+			sp = new ShoppingCart(cartId);
+			this.shoppingCartRepository.save(sp);
 		}
 
-		return optSp.get();
+		return sp;
 	}
 
 	/**
@@ -41,7 +42,7 @@ import java.util.Optional;
 	 * @param cartId
 	 */
 	public void addProduct(Product p, String cartId) {
-		ShoppingCart sp = this.shoppingCartRepository.getById(cartId);
+		ShoppingCart sp = this.getShoppingCart(cartId);
 		if (sp != null) {
 			sp.addProduct(p);
 		}

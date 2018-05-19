@@ -22,16 +22,20 @@ import static org.mockito.Mockito.when;
 
 	@Test public void whenCreateAnUserThenTheUserExistsInTheRepository() {
 		assertTrue(this.userService.getAll().isEmpty());
-		this.userService.register(mock(User.class));
+		User aMock = mock(User.class);
+		this.userService.register(aMock.getEmail(), aMock.getName(), aMock.getUsername(),aMock.getPassword());
 		assertFalse(this.userService.getAll().isEmpty());
 	}
 
 	@Test public void whenGetByIdThenReturnTheRightUser() {
 		Long id = (long) 2;
 		User target = mock(User.class);
-		this.userService.register(mock(User.class));
+		User anotherMock = mock(User.class);
+		when(target.getUsername()).thenReturn("anotherMocky");
+		this.userService.register(anotherMock.getEmail(), anotherMock.getName(), anotherMock.getUsername(),anotherMock.getPassword());
 		when(target.getId()).thenReturn(id);
-		this.userService.register(target);
+		when(target.getUsername()).thenReturn("targetMocky");
+		this.userService.register(target.getEmail(), target.getName(), target.getUsername(),target.getPassword());
 		assertEquals(target.getId(), this.userService.getById(id).getId());
 	}
 
@@ -39,7 +43,7 @@ import static org.mockito.Mockito.when;
 		String mockedUsername = "userMock";
 		User u = mock(User.class);
 		when(u.getUsername()).thenReturn(mockedUsername);
-		this.userService.register(u);
+		this.userService.register(u.getEmail(), u.getName(), u.getUsername(),u.getPassword());
 		assertEquals(mockedUsername, this.userService.getByUsername(mockedUsername).getUsername());
 	}
 
@@ -47,14 +51,15 @@ import static org.mockito.Mockito.when;
 		Long id = (long) 2;
 		User original = mock(User.class);
 		User modified = mock(User.class);
+		User anotherMock = mock(User.class);
 		when(original.getId()).thenReturn(id);
 		when(modified.getId()).thenReturn(id);
 		when(original.getUsername()).thenReturn("original user");
 		when(modified.getUsername()).thenReturn("modified user");
-		this.userService.register(mock(User.class));
-		this.userService.register(original);
+		this.userService.register(anotherMock.getEmail(), anotherMock.getName(), anotherMock.getUsername(),anotherMock.getPassword());
+		this.userService.register(original.getEmail(), original.getName(),original.getUsername(),original.getPassword());
 		assertEquals("original user", this.userService.getById(id).getUsername());
-		this.userService.updateById(id, modified);
+		this.userService.updateById(id, modified.getEmail(),modified.getName(),modified.getUsername(),modified.getPassword());
 		assertEquals("modified user", this.userService.getById(id).getUsername());
 	}
 
@@ -62,8 +67,10 @@ import static org.mockito.Mockito.when;
 		Long id = (long) 2;
 		User target = mock(User.class);
 		when(target.getId()).thenReturn(id);
-		this.userService.register(mock(User.class));
-		this.userService.register(target);
+		User anotherMock = mock(User.class);
+		this.userService.register(anotherMock.getEmail(), anotherMock.getName(),anotherMock.getUsername(),anotherMock.getPassword());
+		this.userService.register(target.getEmail(),target.getName(), target.getUsername(),target.getPassword());
+		target = this.userService.getById(id);
 		assertTrue(this.userService.getAll().contains(target));
 		this.userService.deleteById(id);
 		assertFalse(this.userService.getAll().contains(target));
