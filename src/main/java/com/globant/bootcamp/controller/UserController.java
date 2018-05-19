@@ -17,8 +17,8 @@ public class UserController {
 	}
 
 	@RequestMapping( method= RequestMethod.POST, produces= "application/json" )
-	public String add ( @RequestParam String email, @RequestParam String name, @RequestParam String username, @RequestParam String password){
-		return this.userService.register(email, name, username, password);
+	public String add ( @RequestParam String email, @RequestParam String username, @RequestParam String password){
+		return this.userService.register(email, username, password);
 	}
 	@RequestMapping(method= RequestMethod.DELETE , produces= "application/json" )
 	public void delete (@RequestParam Long id){
@@ -26,12 +26,8 @@ public class UserController {
 	}
 	@RequestMapping(value = "/{id}", method= RequestMethod.PUT , produces= "application/json" )
 	public User updateById (@PathVariable Long id, @RequestParam String email, @RequestParam String name, @RequestParam String username, @RequestParam String password){
-		this.userService.updateById(id,email,name, username, password);
+		this.userService.updateById(id,email,username, password);
 		return this.userService.getById(id);
-	}
-	@RequestMapping(value = "/name/{name}",method= RequestMethod.GET , produces= "application/json" )
-	public User findByName (@PathVariable String name){
-		return this.userService.getByName(name);
 	}
 	@RequestMapping(value = "/{username}",method= RequestMethod.GET , produces= "application/json" )
 	public User findByUsername (@PathVariable("username") String userName){

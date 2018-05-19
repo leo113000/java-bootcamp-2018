@@ -1,24 +1,24 @@
 package com.globant.bootcamp.persistence;
 
-import com.globant.bootcamp.model.ShoppingCart;
+import com.globant.bootcamp.model.Cart;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository public class ShoppingCartRepository extends ArrayList<ShoppingCart> implements iRepository<String, ShoppingCart> {
+@Repository public class CartRepository extends ArrayList<Cart> implements iRepository<String, Cart> {
 
-	public List<ShoppingCart> getAll() {
+	public List<Cart> getAll() {
 		return this;
 	}
 
-	public ShoppingCart getById(String sessionId) {
+	public Cart getById(String sessionId) {
 		return this.getAll().stream().filter(x -> {
 			return x.getSessionId().equals(sessionId);
 		}).findFirst().orElse(null);
 	}
 
-	public ShoppingCart save(ShoppingCart sp) {
+	public Cart save(Cart sp) {
 		if(!contains(sp)){
 			this.add(sp);
 		}
@@ -26,7 +26,7 @@ import java.util.List;
 	}
 
 	@Override public void removeById(String sessionId) {
-		ShoppingCart sp = this.getById(sessionId);
+		Cart sp = this.getById(sessionId);
 		this.remove(sp);
 	}
 }

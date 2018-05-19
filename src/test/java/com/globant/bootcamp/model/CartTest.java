@@ -12,25 +12,25 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringRunner.class) @SpringBootTest public class ShoppingCartTest {
-	private ShoppingCart shoppingCart;
+@RunWith(SpringRunner.class) @SpringBootTest public class CartTest {
+	private Cart cart;
 
 	@Before public void contextLoads() {
-		this.shoppingCart = new ShoppingCart("1");
+		this.cart = new Cart("1");
 	}
 
 	@Test public void whenShoppingCartIsCreatedThenIsEmpty() {
-		assertTrue(shoppingCart.getAllProducts().isEmpty());
+		assertTrue(cart.getAllProducts().isEmpty());
 	}
 
 	@Test public void givenAShoppingCartWithProductsWhenGetAllTheProductsThenReturnAListOfProducts() {
 		Product a = mock(Product.class);
 		Product b = mock(Product.class);
 
-		shoppingCart.addProduct(a);
-		shoppingCart.addProduct(b);
+		cart.addProduct(a);
+		cart.addProduct(b);
 
-		Iterator<Product> iter = shoppingCart.getAllProducts().iterator();
+		Iterator<Product> iter = cart.getAllProducts().iterator();
 
 		assertEquals(a, iter.next());
 		assertEquals(b, iter.next());
@@ -38,18 +38,18 @@ import static org.mockito.Mockito.when;
 
 	@Test public void givenAShoppingCartWithProductsWhenISendTheIdThenReturnTheDesiredProduct() {
 		Product a = mock(Product.class);
-		shoppingCart.addProduct(a);
+		cart.addProduct(a);
 		Long id = (long) 1;
 		when(a.getId()).thenReturn(id);
-		assertEquals(a, shoppingCart.getProductById(id));
+		assertEquals(a, cart.getProductById(id));
 	}
 
 	@Test public void givenACartWithProductsWhenCallEmptyMethodThenTheCartIsEmpty() {
 		Product a = mock(Product.class);
-		shoppingCart.addProduct(a);
-		assertFalse(shoppingCart.getAllProducts().isEmpty());
-		shoppingCart.clear();
-		assertTrue(shoppingCart.getAllProducts().isEmpty());
+		cart.addProduct(a);
+		assertFalse(cart.getAllProducts().isEmpty());
+		cart.clear();
+		assertTrue(cart.getAllProducts().isEmpty());
 	}
 
 	@Test public void givenAShoppingCartWithProductsWhenISendTheIdThenDeleteFromTheListTheDesiredProduct() {
@@ -59,13 +59,13 @@ import static org.mockito.Mockito.when;
 		Long id = (long) 1;
 		when(a.getId()).thenReturn(id);
 
-		shoppingCart.addProduct(a);
-		shoppingCart.addProduct(b);
+		cart.addProduct(a);
+		cart.addProduct(b);
 
-		shoppingCart.removeProductById(id);
+		cart.removeProductById(id);
 
-		assertEquals(1, shoppingCart.getAllProducts().size());
-		assertFalse(shoppingCart.getAllProducts().contains(a));
+		assertEquals(1, cart.getAllProducts().size());
+		assertFalse(cart.getAllProducts().contains(a));
 	}
 
 }

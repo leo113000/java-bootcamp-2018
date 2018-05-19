@@ -1,8 +1,8 @@
 package com.globant.bootcamp.service;
 
 import com.globant.bootcamp.model.Product;
-import com.globant.bootcamp.model.ShoppingCart;
-import com.globant.bootcamp.persistence.ShoppingCartRepository;
+import com.globant.bootcamp.model.Cart;
+import com.globant.bootcamp.persistence.CartRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,22 +14,22 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringRunner.class) @SpringBootTest public class ShoppingCartServiceTest {
+@RunWith(SpringRunner.class) @SpringBootTest public class CartServiceTest {
 
-	private ShoppingCartService shoppingCartService;
+	private CartService cartService;
 	private final int MOCKED_PRODUCTS_QUANTITY = 3;
 
 	@Before public void contextLoads() {
-		ShoppingCartRepository repo = new ShoppingCartRepository();
-		repo.add(new ShoppingCart("1"));
-		repo.add(new ShoppingCart("2"));
+		CartRepository repo = new CartRepository();
+		repo.add(new Cart("1"));
+		repo.add(new Cart("2"));
 		repo.add(this.getMockedCart("3"));
-		shoppingCartService = new ShoppingCartService(repo);
+		cartService = new CartService(repo);
 	}
 
-	private ShoppingCart getMockedCart(String id) {
+	private Cart getMockedCart(String id) {
 
-		ShoppingCart sp = new ShoppingCart(id);
+		Cart sp = new Cart(id);
 
 		for (int i = 0; i < MOCKED_PRODUCTS_QUANTITY; i++) {
 			Product m = mock(Product.class);
@@ -41,27 +41,27 @@ import static org.mockito.Mockito.when;
 	}
 
 	@Test public void whenGetAllProductsThenReturnAListOfProductsOfTheCorrectCart() {
-		ShoppingCart shoppingCartWithElements = shoppingCartService.getShoppingCart("3");
-		ShoppingCart emptyList = shoppingCartService.getShoppingCart("1");
-		assertEquals(MOCKED_PRODUCTS_QUANTITY, shoppingCartWithElements.getAllProducts().size());
+		Cart cartWithElements = cartService.getShoppingCart("3");
+		Cart emptyList = cartService.getShoppingCart("1");
+		assertEquals(MOCKED_PRODUCTS_QUANTITY, cartWithElements.getAllProducts().size());
 		assertEquals(0, emptyList.getAllProducts().size());
 	}
 
 	@Test public void whenAddAProductByIdThenSaveTheDesireProductInTheCorrectCart() {
 		String id = "1";
-		shoppingCartService.addProduct(mock(Product.class), id);
-		assertEquals(1, shoppingCartService.getShoppingCart(id).getAllProducts().size());
+		cartService.addProduct(mock(Product.class), id);
+		assertEquals(1, cartService.getShoppingCart(id).getAllProducts().size());
 	}
 
 	@Test public void whenRemoveAProductByIdThenDeleteTheProductOfTheCorrectCart() {
 		String id = "3";
-		shoppingCartService.removeProduct(Long.parseLong(id), id);
-		assertEquals(2, shoppingCartService.getShoppingCart(id).getAllProducts().size());
+		cartService.removeProduct(Long.parseLong(id), id);
+		assertEquals(2, cartService.getShoppingCart(id).getAllProducts().size());
 	}
 
 	@Test public void whenEmptyACartThenRemoveAllTheElementsOfTheCorrectCart() {
 		String id = "3";
-		shoppingCartService.clearCart(id);
-		assertTrue(shoppingCartService.getShoppingCart(id).getAllProducts().isEmpty());
+		cartService.clearCart(id);
+		assertTrue(cartService.getShoppingCart(id).getAllProducts().isEmpty());
 	}
 }

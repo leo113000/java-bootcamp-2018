@@ -28,17 +28,6 @@ public class UserRepository extends HashMap<Long, User> implements iRepository<L
 		return result;
 	}
 
-	public User getByName(String name) {
-		User result = null;
-		for (User u : this.values()) {
-			if (u.getName().equals(name)) {
-				result = u;
-				break;
-			}
-		}
-		return result;
-	}
-
 	public void removeById(Long id) {
 		this.remove(id);
 	}

@@ -1,35 +1,35 @@
 package com.globant.bootcamp.service;
 
 import com.globant.bootcamp.model.Product;
-import com.globant.bootcamp.model.ShoppingCart;
-import com.globant.bootcamp.persistence.ShoppingCartRepository;
+import com.globant.bootcamp.model.Cart;
+import com.globant.bootcamp.persistence.CartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
 
-@Service public class ShoppingCartService {
+@Service public class CartService {
 
-	@Autowired ShoppingCartRepository shoppingCartRepository;
+	@Autowired CartRepository cartRepository;
 
 	/**
 	 * Constructor
 	 *
 	 * @param repo instance of the Repository
 	 */
-	public ShoppingCartService(ShoppingCartRepository repo) {
-		this.shoppingCartRepository = repo;
+	public CartService(CartRepository repo) {
+		this.cartRepository = repo;
 	}
 
 	/**
 	 * @param cartId
 	 * @return Shopping Cart or null if not exists a matching id
 	 */
-	public ShoppingCart getShoppingCart(String cartId) {
-		ShoppingCart sp = this.shoppingCartRepository.getById(cartId);
+	public Cart getShoppingCart(String cartId) {
+		Cart sp = this.cartRepository.getById(cartId);
 		if (sp == null) {
-			sp = new ShoppingCart(cartId);
-			this.shoppingCartRepository.save(sp);
+			sp = new Cart(cartId);
+			this.cartRepository.save(sp);
 		}
 
 		return sp;
@@ -42,11 +42,11 @@ import org.springframework.stereotype.Service;
 	 * @param cartId
 	 */
 	public void addProduct(Product p, String cartId) {
-		ShoppingCart sp = this.getShoppingCart(cartId);
+		Cart sp = this.getShoppingCart(cartId);
 		if (sp != null) {
 			sp.addProduct(p);
 		}
-		this.shoppingCartRepository.save(sp);
+		this.cartRepository.save(sp);
 	}
 
 	/**
@@ -56,11 +56,11 @@ import org.springframework.stereotype.Service;
 	 * @param cartId
 	 */
 	public void removeProduct(Long productId, String cartId) {
-		ShoppingCart sp = this.shoppingCartRepository.getById(cartId);
+		Cart sp = this.cartRepository.getById(cartId);
 		if (sp != null) {
 			sp.removeProductById(productId);
 		}
-		this.shoppingCartRepository.save(sp);
+		this.cartRepository.save(sp);
 	}
 
 	/**
@@ -69,10 +69,10 @@ import org.springframework.stereotype.Service;
 	 * @param cartId
 	 */
 	public void clearCart(String cartId) {
-		ShoppingCart sp = this.shoppingCartRepository.getById(cartId);
+		Cart sp = this.cartRepository.getById(cartId);
 		if (sp != null) {
 			sp.clear();
 		}
-		this.shoppingCartRepository.save(sp);
+		this.cartRepository.save(sp);
 	}
 }

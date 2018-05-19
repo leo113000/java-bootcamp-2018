@@ -26,13 +26,13 @@ public class UserService {
 	 * @param username
 	 * @param password
 	 */
-	public String register(String email, String name,String username,String password) {
+	public String register(String email, String username,String password) {
 		String result;
 
 		if(getByUsername(username) != null){
 			result = "The username is already taken";
 		}else{
-			this.userRepository.save(new User(email, name, username, password));
+			this.userRepository.save(new User(email, username, password));
 			result = "User Registered!";
 		}
 
@@ -67,23 +67,14 @@ public class UserService {
 	}
 
 	/**
-	 * Retrieves an User by name
-	 *
-	 * @param name
-	 * @return User
+	 *  updates an user by id
+	 * @param id
+	 * @param email
+	 * @param username
+	 * @param password
 	 */
-	public User getByName(String name) {
-		return this.userRepository.getByName(name);
-	}
-
-	/**
-	 * Updates an user by id
-	 *
-	 * @param id of the User
-	 * @param u  the new User Model
-	 */
-	public void updateById(Long id, String email, String name,String username,String password) {
-		this.userRepository.put(id, new User(email,name,username, password));
+	public void updateById(Long id, String email,String username,String password) {
+		this.userRepository.put(id, new User(email, username, password));
 	}
 
 	/**

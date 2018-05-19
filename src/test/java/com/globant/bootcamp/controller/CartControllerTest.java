@@ -1,9 +1,9 @@
 package com.globant.bootcamp.controller;
 
 import com.globant.bootcamp.model.Product;
-import com.globant.bootcamp.model.ShoppingCart;
-import com.globant.bootcamp.persistence.ShoppingCartRepository;
-import com.globant.bootcamp.service.ShoppingCartService;
+import com.globant.bootcamp.model.Cart;
+import com.globant.bootcamp.persistence.CartRepository;
+import com.globant.bootcamp.service.CartService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,21 +17,21 @@ import static junit.framework.TestCase.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringRunner.class) @SpringBootTest public class ShoppingCartControllerTest {
+@RunWith(SpringRunner.class) @SpringBootTest public class CartControllerTest {
 
-	private ShoppingCartController controller;
+	private CartController controller;
 	@Autowired private MockHttpSession mockHttpSession;
 
 	@Before public void contextLoads() {
-		ShoppingCartService service = new ShoppingCartService(this.mockRepository());
-		this.controller = new ShoppingCartController(service);
+		CartService service = new CartService(this.mockRepository());
+		this.controller = new CartController(service);
 	}
 
-	private ShoppingCartRepository mockRepository() {
-		ShoppingCartRepository repo = new ShoppingCartRepository();
+	private CartRepository mockRepository() {
+		CartRepository repo = new CartRepository();
 
-		ShoppingCart sp1 = new ShoppingCart(mockHttpSession.getId());
-		ShoppingCart sp2 = new ShoppingCart(mockHttpSession.getId() + 1);
+		Cart sp1 = new Cart(mockHttpSession.getId());
+		Cart sp2 = new Cart(mockHttpSession.getId() + 1);
 
 		Product a = mock(Product.class);
 		when(a.getId()).thenReturn((long) 1);
@@ -50,12 +50,12 @@ import static org.mockito.Mockito.when;
 	}
 
 	@Test public void whenGetShoppingCartThenReturnAShoppingCart() {
-		ShoppingCart sp = this.controller.getShoppingCartBySessionId();
+		Cart sp = this.controller.getShoppingCartBySessionId();
 		assertEquals(2, sp.getAllProducts().size());
 	}
 
 	@Test public void whenDeleteShoppingCartThenEmptyShoppingCart() {
-		ShoppingCart sp = this.controller.getShoppingCartBySessionId();
+		Cart sp = this.controller.getShoppingCartBySessionId();
 		this.controller.emptyShoppingCart();
 		assertTrue(sp.getAllProducts().isEmpty());
 	}
@@ -66,7 +66,7 @@ import static org.mockito.Mockito.when;
 		when(p.getId()).thenReturn(productId);
 		when(p.getName()).thenReturn("mocked product");
 		this.controller.addProduct(p.getId(),p.getName());
-		ShoppingCart sp = this.controller.getShoppingCartBySessionId();
+		Cart sp = this.controller.getShoppingCartBySessionId();
 		assertEquals("mocked product", this.controller.getShoppingCartBySessionId().getProductById(productId).getName());
 	}
 
