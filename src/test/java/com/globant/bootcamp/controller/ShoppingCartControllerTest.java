@@ -65,7 +65,7 @@ import static org.mockito.Mockito.when;
 		Long productId = (long) 12;
 		when(p.getId()).thenReturn(productId);
 		when(p.getName()).thenReturn("mocked product");
-		this.controller.addProduct(p);
+		this.controller.addProduct(p.getId(),p.getName());
 		ShoppingCart sp = this.controller.getShoppingCartBySessionId();
 		assertEquals("mocked product", this.controller.getShoppingCartBySessionId().getProductById(productId).getName());
 	}
@@ -75,7 +75,7 @@ import static org.mockito.Mockito.when;
 		Long productId = (long) 1;
 		when(p.getId()).thenReturn(productId);
 		assertEquals(p.getId(), this.controller.getShoppingCartBySessionId().getProductById((long) 1).getId());
-		this.controller.removeProduct(p);
+		this.controller.removeProduct(p.getId());
 		assertEquals(null, this.controller.getShoppingCartBySessionId().getProductById((long) 1));
 	}
 

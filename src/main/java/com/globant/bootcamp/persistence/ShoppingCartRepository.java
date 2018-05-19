@@ -15,13 +15,12 @@ import java.util.List;
 	public ShoppingCart getById(String sessionId) {
 		return this.getAll().stream().filter(x -> {
 			return x.getSessionId().equals(sessionId);
-		}).findFirst().get();
+		}).findFirst().orElse(null);
 	}
 
 	public ShoppingCart save(ShoppingCart sp) {
-		if (this.contains(sp)) {
+		if(!contains(sp)){
 			this.add(sp);
-			sp = this.get(this.size() - 1);
 		}
 		return sp;
 	}
