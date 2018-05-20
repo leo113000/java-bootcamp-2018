@@ -1,15 +1,18 @@
 package com.globant.bootcamp.service;
 
 import com.globant.bootcamp.model.User;
+import com.globant.bootcamp.persistence.AuthRepository;
 import com.globant.bootcamp.persistence.UserRepository;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
 
-import java.util.List;
+
+
 @Service
 public class UserService {
 	@Autowired private UserRepository userRepository;
+	@Autowired private AuthRepository authRepository;
 
 	/**
 	 * Constructor with one param
@@ -18,6 +21,24 @@ public class UserService {
 	 */
 	public UserService(UserRepository userRepository) {
 		this.userRepository = userRepository;
+	}
+
+	public String login(String username,String password) {
+		String token = null;
+
+		User u = getByUsername(username);
+
+		if(u != null && password.equals(decrypt(u.getPassword()))) {
+			token = registerToken(u);
+		}
+
+		return token;
+	}
+
+	private String registerToken(User user) {
+		String token = encrypt(user.getUsername() + user.getPassword());
+		this.authRepository.login(token,user);
+		return token;
 	}
 
 	/**
@@ -31,30 +52,20 @@ public class UserService {
 
 		if(getByUsername(username) != null){
 			result = "The username is already taken";
+		}else if(getByEmail(email) != null) {
+			result = "Already exists an user with that email";
 		}else{
-			this.userRepository.save(new User(email, username, password));
+			String hashedPassword = encrypt(password);
+			this.userRepository.save(new User(email, username, hashedPassword));
 			result = "User Registered!";
 		}
-
 		return result;
 	}
 
-	/**
-	 * @return a List with all the users in the repo
-	 */
-	public List<User> getAll() {
-		return this.userRepository.getAll();
+	public void logout(String token){
+		this.authRepository.logout(token);
 	}
 
-	/**
-	 * Retrieves an User by Id
-	 *
-	 * @param id
-	 * @return User
-	 */
-	public User getById(Long id) {
-		return this.userRepository.getById(id);
-	}
 
 	/**
 	 * Retrieves an User by username
@@ -63,27 +74,25 @@ public class UserService {
 	 * @return User
 	 */
 	public User getByUsername(String username) {
-		return this.userRepository.getByUsername(username);
+		return this.userRepository.findByUsername(username);
 	}
 
 	/**
-	 *  updates an user by id
-	 * @param id
-	 * @param email
-	 * @param username
-	 * @param password
-	 */
-	public void updateById(Long id, String email,String username,String password) {
-		this.userRepository.put(id, new User(email, username, password));
-	}
-
-	/**
-	 * Deletes an user in the repo by id
+	 * Retrieves an User by email
 	 *
-	 * @param id of the User
+	 * @param email
+	 * @return User
 	 */
-	public void deleteById(Long id) {
-		this.userRepository.removeById(id);
+	public User getByEmail(String email) {
+		return this.userRepository.findByEmail(email);
+	}
+
+	private String encrypt(String s){
+		return new String (Base64.encodeBase64(s.getBytes()));
+	}
+
+	private String decrypt(String s){
+		return new String (Base64.decodeBase64(s.getBytes()));
 	}
 
 }
