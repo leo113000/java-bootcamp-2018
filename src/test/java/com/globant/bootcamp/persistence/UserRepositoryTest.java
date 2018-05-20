@@ -1,32 +1,29 @@
 package com.globant.bootcamp.persistence;
 
 import com.globant.bootcamp.model.User;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static junit.framework.TestCase.*;
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class) @SpringBootTest public class UserRepositoryTest {
 
-	UserRepository userRepository;
+	@Autowired UserRepository userRepository;
 
-	@Before public void contextLoads() {
-		this.userRepository = new UserRepository();
-	}
-
-	@Test public void givenAnEmptyRepositoryThenTheSizeIsZero() {
-		assertTrue(this.userRepository.isEmpty());
+	@Test public void givenAnEmptyRepositoryWhenCallFindAllThenReturnsAnEmptyList() {
+		assertTrue(this.userRepository.findAll().isEmpty());
 	}
 
 	@Test public void givenAnEmptyRepositoryWhenAddOneUserThenTheSizeIsOne() {
 		User u = mock(User.class);
 		this.userRepository.save(u);
-		assertEquals(1, this.userRepository.size());
+		assertEquals(1, this.userRepository.findAll().size());
 	}
 
 	@Test public void givenARepositoryWithElementsWhenGetByIdThenReturnsTheRightUser() {
@@ -34,15 +31,7 @@ import static org.mockito.Mockito.when;
 		User u = mock(User.class);
 		when(u.getId()).thenReturn(id);
 		this.userRepository.save(u);
-		assertEquals(id, this.userRepository.getById(id).getId());
-	}
-
-	@Test public void givenARepositoryWithElementsWhenGetByUsernameThenReturnsTheRightUser() {
-		String username = "mock user";
-		User u = mock(User.class);
-		when(u.getUsername()).thenReturn(username);
-		this.userRepository.save(u);
-		assertEquals(username, this.userRepository.getByUsername(username).getUsername());
+		assertEquals(u.getId(), this.userRepository.getOne(id).getId());
 	}
 
 	@Test public void givenARepositoryWithElementsWhenGetAllThenReturnAListWithTheElements() {
@@ -50,7 +39,7 @@ import static org.mockito.Mockito.when;
 		for (int i = 0; i < elementsQty; i++) {
 			this.userRepository.save(mock(User.class));
 		}
-		assertEquals(elementsQty, this.userRepository.getAll().size());
+		assertEquals(elementsQty, this.userRepository.findAll().size());
 	}
 
 	@Test public void givenARepositoryWithElementsWhenRemoveByIdThenRemoveTheRightElement() {
@@ -64,10 +53,10 @@ import static org.mockito.Mockito.when;
 
 		this.userRepository.save(toKeep);
 		this.userRepository.save(toRemove);
-		this.userRepository.removeById(id);
+		this.userRepository.deleteById(id);
 
-		assertEquals(1, this.userRepository.size());
-		assertFalse(this.userRepository.containsValue(toRemove));
+		assertEquals(1, this.userRepository.findAll().size());
+		assertEquals(null, this.userRepository.getOne(toRemove.getId()));
 	}
 
 }

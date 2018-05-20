@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 	@Autowired private UserRepository userRepository;
-	@Autowired private AuthRepository authRepository;
 
 	/**
 	 * Constructor with one param
@@ -37,7 +36,7 @@ public class UserService {
 
 	private String registerToken(User user) {
 		String token = encrypt(user.getUsername() + user.getPassword());
-		this.authRepository.login(token,user);
+		AuthRepository.getInstance().login(token,user);
 		return token;
 	}
 
@@ -63,7 +62,7 @@ public class UserService {
 	}
 
 	public void logout(String token){
-		this.authRepository.logout(token);
+		AuthRepository.getInstance().logout(token);
 	}
 
 
