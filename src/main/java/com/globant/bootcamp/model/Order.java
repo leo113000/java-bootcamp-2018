@@ -1,12 +1,13 @@
 package com.globant.bootcamp.model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
 
-@Getter @Setter @Entity @Table(name = "orders") public class Order {
+@NoArgsConstructor @Getter @Setter @Entity @Table(name = "orders") public class Order {
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "id") private Long id;
 	@OneToOne @JoinColumn(name = "cart_id") private Cart cart;
 	@Column(name = "date") private Date date;

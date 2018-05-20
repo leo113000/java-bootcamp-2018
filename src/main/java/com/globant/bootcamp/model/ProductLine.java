@@ -1,11 +1,12 @@
 package com.globant.bootcamp.model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
-@Getter @Setter @Entity @Table(name = "product_lines") public class ProductLine {
+@NoArgsConstructor @Getter @Setter @Entity @Table(name = "product_lines") public class ProductLine {
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "id") private String id;
 
 	@ManyToOne @JoinColumn(name = "product_id") private Product product;
