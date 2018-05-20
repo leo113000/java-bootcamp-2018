@@ -11,7 +11,7 @@ import java.util.Date;
 	@OneToOne @JoinColumn(name = "cart_id") private Cart cart;
 	@Column(name = "date") private Date date;
 	@Column(name = "total") private double total;
-	@OneToMany(mappedBy = "deliver_methods") private DeliveryMethod deliveryMethod;
-	@OneToMany(mappedBy = "payment_methods") private PaymentMethod paymentMethod;
-	@OneToMany(mappedBy = "statuses") private Status status;
+	@ManyToOne @JoinColumn(name = "deliver_method_id") private DeliveryMethod deliveryMethod;
+	@ManyToOne @JoinColumn(name = "payment_method_id") private PaymentMethod paymentMethod;
+	@ManyToOne @JoinColumn(name = "status_id") private Status status;
 }
