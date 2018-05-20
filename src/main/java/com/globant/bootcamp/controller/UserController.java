@@ -2,6 +2,7 @@ package com.globant.bootcamp.controller;
 
 
 import com.globant.bootcamp.service.UserService;
+import com.globant.bootcamp.util.StringResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +19,12 @@ import javax.servlet.http.HttpServletResponse;
 		this.userService = userService;
 	}
 
-	@RequestMapping(value = "/register", method = RequestMethod.POST, produces = "text/plain") public String register(
+	@RequestMapping(value = "/register", method = RequestMethod.POST, produces = "application/json") public StringResponse register(
 			@RequestParam String email, @RequestParam String username, @RequestParam String password) {
-		return this.userService.register(email,username,password);
+		return new StringResponse(this.userService.register(email,username,password));
 	}
 
-	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = "text/plain") public String login(
+	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json") public StringResponse login(
 			@RequestParam String username, @RequestParam String password, HttpServletRequest request, HttpServletResponse response) {
 		String result="Login failed";
 		if (request.getSession().getAttribute("token") == null){
@@ -38,13 +39,16 @@ import javax.servlet.http.HttpServletResponse;
 			response.setStatus(HttpStatus.CONFLICT.value());
 			result = "You're already logged";
 		}
-		return result;
+		return new StringResponse(result);
 	}
 
-	@RequestMapping(value = "/logout", method = RequestMethod.GET, produces = "application/json") public void logout(@SessionAttribute(value = "token",required = false) String token, HttpServletRequest request) {
+	@RequestMapping(value = "/logout", method = RequestMethod.GET, produces = "application/json") private StringResponse logout(@SessionAttribute(value = "token",required = false) String token, HttpServletRequest request) {
+		StringResponse response = null;
 		if(token != null){
 			request.getSession().removeAttribute("token");
 			this.userService.logout(token);
+			response = new StringResponse("Logout successful");
 		}
+		return response;
 	}
 }
