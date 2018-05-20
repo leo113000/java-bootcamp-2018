@@ -3,11 +3,13 @@ package com.globant.bootcamp.model;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter @Setter public class User {
-	private Long id;
-	private String email;
-	private String username;
-	private String password;
+import javax.persistence.*;
+
+@Getter @Setter @Entity @Table(name = "users") public class User {
+	@Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "id") private Long id;
+	@Column(name = "email") private String email;
+	@Column(name = "username") private String username;
+	@Column(name = "password") private String password;
 
 	public User(String email, String username, String password) {
 		this.email = email;

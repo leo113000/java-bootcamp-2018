@@ -3,15 +3,17 @@ package com.globant.bootcamp.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Cart {
-	@Getter @Setter private Long id;
-	@Getter @Setter private User user;
-	private Map<Long,ProductLine> productList;
+@Getter @Setter @Entity @Table(name = "carts") public class Cart {
+	@Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "id") private Long id;
+	@OneToOne @JoinColumn(name = "user_id") private User user;
+	@OneToMany(mappedBy = "carts", cascade = CascadeType.ALL, fetch = FetchType.EAGER) private Map<Long, ProductLine> productList;
+	private double totalPrice;
 
 	/**
 	 * Constructor with params
@@ -24,12 +26,11 @@ public class Cart {
 	}
 
 	/**
-	 *
-	 * @param p Product
+	 * @param p   Product
 	 * @param qty quantity
 	 */
 	public void addProduct(Product p, int qty) {
-		this.productList.put(p.getId(),new ProductLine(p,qty));
+		this.productList.put(p.getId(), new ProductLine(p, qty));
 	}
 
 	/**
@@ -43,7 +44,6 @@ public class Cart {
 	}
 
 	/**
-	 *
 	 * @param id
 	 * @return The removed obj or null
 	 */
@@ -68,14 +68,14 @@ public class Cart {
 	}
 
 	/**
-	 *
 	 * @return total price of the cart
 	 */
-	public Float getTotal(){
-		Float total = (float) 0;
-		for(ProductLine pl : this.productList.values()){
+	public double getTotal() {
+		double total = (float) 0;
+		for (ProductLine pl : this.productList.values()) {
 			total += pl.getTotal();
 		}
+		this.totalPrice = total;
 		return total;
 	}
 }

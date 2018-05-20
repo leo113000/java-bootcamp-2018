@@ -3,9 +3,11 @@ package com.globant.bootcamp.model;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
-public class Category {
-	private Long id;
-	private String name;
+import javax.persistence.*;
+import java.util.List;
+
+@Getter @Setter @Entity @Table(name = "categories") public class Category {
+	@Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "id") private Long id;
+	@Column(name = "name") private String name;
+	@ManyToMany(mappedBy = "categories") private List<Product> productList;
 }
