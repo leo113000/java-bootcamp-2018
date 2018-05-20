@@ -23,21 +23,28 @@ import javax.servlet.http.HttpServletResponse;
 		return this.userService.register(email,username,password);
 	}
 
-	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json") public void login(
+	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = "text/plain") public String login(
 			@RequestParam String username, @RequestParam String password, HttpServletRequest request, HttpServletResponse response) {
+		String result="Login failed";
 		if (request.getSession().getAttribute("token") == null){
-			response.setStatus(HttpStatus.UNAUTHORIZED.value()); String token = this.userService.login(username, password);
+			response.setStatus(HttpStatus.UNAUTHORIZED.value());
+			String token = this.userService.login(username, password);
 			if (token != null) {
 				request.getSession().setAttribute("token", token);
 				response.setStatus(HttpStatus.ACCEPTED.value());
+				result = "Login success!";
 			}
 		}else{
 			response.setStatus(HttpStatus.CONFLICT.value());
+			result = "You're already logged";
 		}
+		return result;
 	}
 
-	@RequestMapping(value = "/logout", method = RequestMethod.GET, produces = "application/json") public void logout(@CookieValue("token") String token, HttpServletRequest request) {
-		request.getSession().invalidate();
-		this.userService.logout(token);
+	@RequestMapping(value = "/logout", method = RequestMethod.GET, produces = "application/json") public void logout(@SessionAttribute(value = "token",required = false) String token, HttpServletRequest request) {
+		if(token != null){
+			request.getSession().removeAttribute("token");
+			this.userService.logout(token);
+		}
 	}
 }
