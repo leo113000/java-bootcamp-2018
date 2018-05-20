@@ -1,9 +1,9 @@
 package com.globant.bootcamp.persistence;
 
-import com.globant.bootcamp.model.Cart;
+import com.globant.bootcamp.model.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CartRepository extends JpaRepository <Cart,Long> {
+public interface CategoryRepository extends JpaRepository<Category,Long> {
 }
