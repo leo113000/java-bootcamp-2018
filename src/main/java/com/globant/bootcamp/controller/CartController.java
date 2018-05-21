@@ -1,27 +1,29 @@
 package com.globant.bootcamp.controller;
 
 import com.globant.bootcamp.model.Cart;
+import com.globant.bootcamp.model.User;
+import com.globant.bootcamp.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
 
 @RestController @RequestMapping("/cart") public class CartController {
 
 	@Autowired
-	//private CartService cartService;
+	private CartService cartService;
 
 	/**
 	 * Constructor
 	 *
 	 * @param cartService
 	 */
-	//public CartController(CartService cartService) {
-	//	this.cartService = cartService;
-	//}
+	public CartController(CartService cartService) {
+		this.cartService = cartService;
+	}
 
-	@RequestMapping(method = RequestMethod.GET, produces = "application/json") public Cart getShoppingCart() {
+	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
+	public Cart getCart(HttpServletResponse response) {
 		return null;
 	}
 
@@ -34,12 +36,12 @@ import org.springframework.web.bind.annotation.RestController;
 	}
 
 	@RequestMapping(value = "/{productLineId}", method = RequestMethod.PUT, produces = "application/json") public Cart updateProductLine(
-			@PathVariable Long ProductLineId) {
+			@PathVariable Long ProductId) {
 		return null;
 	}
 
-	@RequestMapping(value = "/{productLineId}", method = RequestMethod.DELETE, produces = "application/json") public Cart deleteProductLine(
-			@PathVariable Long ProductLineId) {
+	@RequestMapping(value = "/{productLineId}", method = RequestMethod.DELETE, produces = "application/json") public Cart removeProduct(
+			@PathVariable Long ProductId) {
 		return null;
 	}
 
