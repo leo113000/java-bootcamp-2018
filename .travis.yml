@@ -2,7 +2,7 @@ language: java
 jdk:
 - oraclejdk8
 
-script: ./mvnw clean install
+script: mvn clean install
 notifications:
   email:
     recipients:
