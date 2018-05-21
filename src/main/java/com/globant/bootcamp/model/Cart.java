@@ -1,18 +1,30 @@
 package com.globant.bootcamp.model;
 
+import com.google.common.util.concurrent.AtomicDouble;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
-@NoArgsConstructor @Getter @Setter @Entity @Table(name = "carts") public class Cart {
-	@Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "id") private Long id;
-	@OneToOne @JoinColumn(name = "user_id") private User user;
+@NoArgsConstructor @Entity @Table(name = "carts") public class Cart {
+	@Getter @Setter @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "id") private Long id;
+	@Getter @Setter @OneToOne @JoinColumn(name = "user_id") private User user;
 
-	@OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.EAGER) private List<ProductLine> productList;
-	private double totalPrice;
+	@Getter @Setter @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.EAGER) private List<ProductLine> productList;
+
+	@Setter
+	@Column(name = "total")
+	private double total;
+
+	public double getTotal() {
+		AtomicDouble total = new AtomicDouble();
+		this.productList.forEach(x -> total.addAndGet(x.getSubtotal()));
+		return total.get();
+	}
+
 
 	/**
 	 * Constructor with params
@@ -21,7 +33,7 @@ import java.util.List;
 	 */
 	public Cart(User u) {
 		this.user = u;
-		//this.productList = new HashMap<>();
+		this.productList = new ArrayList<>();
 	}
 
 	/**
@@ -29,52 +41,24 @@ import java.util.List;
 	 * @param qty quantity
 	 */
 	public void addProduct(Product p, int qty) {
-		//this.productList.put(p.getId(), new ProductLine(p, qty));
+		this.productList.add(new ProductLine(p,qty));
 	}
 
 	/**
-	 * Get a Product of the Cart By Id
-	 *
-	 * @param id
-	 * @return a ProductLine instance or null if there's not a product with the parameter's id
+	 * @param id of the Product
+	 * @return void
 	 */
-	//public ProductLine getProductById(Long id) {
-	//return this.productList.get(id);
-	//}
-
-	/**
-	 * @param id
-	 * @return The removed obj or null
-	 */
-	//public ProductLine removeProductById(Long id) {
-	//return this.productList.remove(id);
-	//}
-
-	/**
-	 * Retrieves the product lines list
-	 *
-	 * @return List with the products or a empty list
-	 */
-	//public List<ProductLine> getAllProducts() {
-	//return new ArrayList<>(this.productList.values());
-	//}
+	public void removeProductById(Long id) {
+		this.productList.removeIf(x -> {
+			return x.getProduct().getId().equals(id);
+		});
+	}
 
 	/**
 	 * Empties the cart
 	 */
-	//public void clear() {
-	//this.productList.clear();
-	//}
-
-	/**
-	 * @return total price of the cart
-	 */
-	public double getTotal() {
-		double total = (float) 0;
-		//for (ProductLine pl : this.productList.values()) {
-		//total += pl.getTotal();
-		//}
-		this.totalPrice = total;
-		return total;
+	public void clear() {
+		this.productList.clear();
 	}
+
 }

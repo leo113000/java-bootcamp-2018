@@ -6,13 +6,13 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@NoArgsConstructor @Getter @Setter @Entity @Table(name = "product_lines") public class ProductLine {
-	@Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "id") private String id;
+@NoArgsConstructor @Entity @Table(name = "product_lines") public class ProductLine {
+	@Getter @Setter @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "id") private String id;
 
-	@ManyToOne @JoinColumn(name = "product_id") private Product product;
+	@Getter @Setter @ManyToOne @JoinColumn(name = "product_id") private Product product;
 
-	@Column(name = "qty") private int qty;
-	@Column(name = "subtotal") private int subtotal;
+	@Getter @Setter @Column(name = "qty") private int qty;
+	@Setter @Column(name = "subtotal") private double subtotal;
 
 	@ManyToOne @JoinColumn(name = "cart_id") private Cart cart;
 
@@ -20,4 +20,10 @@ import javax.persistence.*;
 		this.product = product;
 		this.qty = qty;
 	}
+
+	public double getSubtotal(){
+		this.subtotal = product.getPrice() * qty;
+		return this.subtotal;
+	}
+
 }

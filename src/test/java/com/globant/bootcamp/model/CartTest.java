@@ -16,40 +16,35 @@ import static org.mockito.Mockito.when;
 	private Cart cart;
 
 	@Before public void contextLoads() {
-		this.cart = new Cart("1");
+		this.cart = new Cart(mock(User.class));
 	}
 
 	@Test public void whenShoppingCartIsCreatedThenIsEmpty() {
-		assertTrue(cart.getAllProducts().isEmpty());
+		assertTrue(cart.getProductList().isEmpty());
 	}
 
 	@Test public void givenAShoppingCartWithProductsWhenGetAllTheProductsThenReturnAListOfProducts() {
 		Product a = mock(Product.class);
 		Product b = mock(Product.class);
 
-		cart.addProduct(a);
-		cart.addProduct(b);
+		cart.addProduct(a,1);
+		cart.addProduct(b,4);
 
-		Iterator<Product> iter = cart.getAllProducts().iterator();
-
-		assertEquals(a, iter.next());
-		assertEquals(b, iter.next());
-	}
-
-	@Test public void givenAShoppingCartWithProductsWhenISendTheIdThenReturnTheDesiredProduct() {
-		Product a = mock(Product.class);
-		cart.addProduct(a);
-		Long id = (long) 1;
-		when(a.getId()).thenReturn(id);
-		assertEquals(a, cart.getProductById(id));
+		Iterator<ProductLine> iter = cart.getProductList().iterator();
+		ProductLine lineA = iter.next();
+		ProductLine lineB = iter.next();
+		assertEquals(a,lineA.getProduct());
+		assertEquals(1, lineA.getQty());
+		assertEquals(b, lineB.getProduct());
+		assertEquals(4, lineB.getQty());
 	}
 
 	@Test public void givenACartWithProductsWhenCallEmptyMethodThenTheCartIsEmpty() {
 		Product a = mock(Product.class);
-		cart.addProduct(a);
-		assertFalse(cart.getAllProducts().isEmpty());
+		cart.addProduct(a,45);
+		assertFalse(cart.getProductList().isEmpty());
 		cart.clear();
-		assertTrue(cart.getAllProducts().isEmpty());
+		assertTrue(cart.getProductList().isEmpty());
 	}
 
 	@Test public void givenAShoppingCartWithProductsWhenISendTheIdThenDeleteFromTheListTheDesiredProduct() {
@@ -59,13 +54,30 @@ import static org.mockito.Mockito.when;
 		Long id = (long) 1;
 		when(a.getId()).thenReturn(id);
 
-		cart.addProduct(a);
-		cart.addProduct(b);
+		cart.addProduct(a,21);
+		cart.addProduct(b,21);
 
 		cart.removeProductById(id);
 
-		assertEquals(1, cart.getAllProducts().size());
-		assertFalse(cart.getAllProducts().contains(a));
+		assertEquals(1, cart.getProductList().size());
+		assertNull(cart.getProductList().stream().filter(x ->
+				x.getProduct().equals(a))
+				.findFirst().orElse(null));
+	}
+
+	@Test
+	public void givenACartWithElementsWhenGetTheTotalThenReturnTheAdditionOfAllTheProductLines(){
+		Product a = mock(Product.class);
+		Product b = mock(Product.class);
+
+		when(a.getPrice()).thenReturn(10.0);
+		when(b.getPrice()).thenReturn(10.0);
+
+		cart.addProduct(a,10);
+		cart.addProduct(b,10);
+
+		cart.getTotal();
+
 	}
 
 }
