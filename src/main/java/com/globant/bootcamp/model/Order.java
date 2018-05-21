@@ -15,4 +15,12 @@ import java.util.Date;
 	@ManyToOne @JoinColumn(name = "deliver_method_id") private DeliveryMethod deliveryMethod;
 	@ManyToOne @JoinColumn(name = "payment_method_id") private PaymentMethod paymentMethod;
 	@ManyToOne @JoinColumn(name = "status_id") private Status status;
+
+	public Order(Cart cart, Date date, DeliveryMethod deliveryMethod, PaymentMethod paymentMethod, Status status) {
+		this.cart = cart;
+		this.date = date;
+		this.deliveryMethod = deliveryMethod;
+		this.paymentMethod = paymentMethod;
+		this.status = status;
+	}
 }
