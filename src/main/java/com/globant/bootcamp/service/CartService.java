@@ -2,15 +2,18 @@ package com.globant.bootcamp.service;
 
 import com.globant.bootcamp.model.Product;
 import com.globant.bootcamp.model.Cart;
+import com.globant.bootcamp.model.User;
 import com.globant.bootcamp.persistence.CartRepository;
+import com.globant.bootcamp.persistence.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+import java.util.Optional;
 
 @Service public class CartService {
 
 	@Autowired CartRepository cartRepository;
+	@Autowired ProductRepository productRepository;
 
 	/**
 	 * Constructor
@@ -22,57 +25,80 @@ import org.springframework.stereotype.Service;
 	}
 
 	/**
-	 * @param cartId
-	 * @return Shopping Cart or null if not exists a matching id
+	 * @param user
+	 * @return Shopping Cart
 	 */
-	public Cart getShoppingCart(String cartId) {
-		Cart sp = this.cartRepository.getById(cartId);
-		if (sp == null) {
-			sp = new Cart(cartId);
-			this.cartRepository.save(sp);
-		}
+	public Cart getCart(User user) {
+		Cart cart = this.cartRepository.findByUserId(user.getId());
 
-		return sp;
+		return cart == null ? this.createCart(user) : cart;
 	}
 
 	/**
-	 * Add a product to the corresponding cart
-	 *
-	 * @param p      Product to be added
-	 * @param cartId
+	 *  Create a cart in the repository
+	 * @param user
+	 * @return The saved cart
 	 */
-	public void addProduct(Product p, String cartId) {
-		Cart sp = this.getShoppingCart(cartId);
-		if (sp != null) {
-			sp.addProduct(p);
-		}
-		this.cartRepository.save(sp);
+	private Cart createCart(User user) {
+		return this.cartRepository.save(new Cart(user));
 	}
 
 	/**
-	 * Remove a product of a Cart searched by id
-	 *
+	 *  Add a product to the cart
 	 * @param productId
-	 * @param cartId
+	 * @param qty
+	 * @param user
+	 * @return the cart with new product or null if the product not exists
 	 */
-	public void removeProduct(Long productId, String cartId) {
-		Cart sp = this.cartRepository.getById(cartId);
-		if (sp != null) {
-			sp.removeProductById(productId);
+	public Cart addProduct(Long productId, int qty, User user) {
+		Cart cart = null;
+		Optional<Product> productOptional = productRepository.findById(productId);
+		if(productOptional.isPresent()){
+		 	cart = this.getCart(user);
+			cart.addProduct(productOptional.get(),qty);
+			this.cartRepository.save(cart);
 		}
-		this.cartRepository.save(sp);
+		return cart;
 	}
 
 	/**
-	 * Remove all the products in a cart
-	 *
-	 * @param cartId
+	 *  Update a product in the cart
+	 * @param productId
+	 * @param qty
+	 * @param user
+	 * @return
 	 */
-	public void clearCart(String cartId) {
-		Cart sp = this.cartRepository.getById(cartId);
-		if (sp != null) {
-			sp.clear();
-		}
-		this.cartRepository.save(sp);
+	public Cart updateLineProduct(Long productId, int qty, User user){
+		Cart cart = this.getCart(user);
+		cart.removeProductById(productId);
+		return addProduct(productId,qty,user);
 	}
+
+
+	/**
+	 * Remove the ProductLine with the product
+	 * @param productId
+	 * @param user
+	 * @return the cart without the product
+	 */
+	public Cart removeProduct(Long productId, User user) {
+		Cart cart = getCart(user);
+		cart.removeProductById(productId);
+		this.cartRepository.save(cart);
+		return cart;
+	}
+
+	/**
+	 * Remove all the products
+	 * @param user
+	 */
+	public void clearCart(User user) {
+		Cart cart = this.getCart(user);
+		cart.clear();
+		this.cartRepository.save(cart);
+	}
+
+
+
+
 }
