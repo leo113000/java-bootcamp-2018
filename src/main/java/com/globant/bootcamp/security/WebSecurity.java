@@ -78,6 +78,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 			.authorizeRequests()
 			.antMatchers(REGISTER_ROUTE).permitAll()
 			.antMatchers(LOGIN_ROUTE).permitAll()
+			.antMatchers("/products/**").permitAll()
 			.anyRequest()
 			.authenticated();
 

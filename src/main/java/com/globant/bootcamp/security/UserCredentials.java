@@ -82,4 +82,10 @@ public class UserCredentials implements UserDetails {
 		return Objects.hash(id);
 	}
 
+	public User getUser(){
+		User user = new User(this.email,this.username,this.password);
+		user.setId(this.id);
+		return user;
+	}
+
 }
