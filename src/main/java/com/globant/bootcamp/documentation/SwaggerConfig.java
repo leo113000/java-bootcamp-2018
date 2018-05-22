@@ -1,4 +1,4 @@
-package com.globant.bootcamp.config;
+package com.globant.bootcamp.documentation;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

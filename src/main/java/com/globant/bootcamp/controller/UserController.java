@@ -1,54 +1,63 @@
 package com.globant.bootcamp.controller;
 
 
+import com.globant.bootcamp.exception.ExistingEmailException;
+import com.globant.bootcamp.exception.ExistingUsernameException;
+import com.globant.bootcamp.payload.ApiResponse;
+import com.globant.bootcamp.payload.JWTAuthenticationResponse;
+import com.globant.bootcamp.payload.LoginRequest;
+import com.globant.bootcamp.payload.RegisterRequest;
+import com.globant.bootcamp.security.JWTTokenProvider;
 import com.globant.bootcamp.service.UserService;
-import com.globant.bootcamp.util.StringResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 
 @RestController public class UserController {
 
-	@Autowired private UserService userService;
+	@Autowired
+	AuthenticationManager authenticationManager;
 
-	public UserController(UserService userService) {
-		this.userService = userService;
+	@Autowired UserService userService;
+
+
+	@Autowired JWTTokenProvider tokenProvider;
+
+
+
+	@PostMapping("/login")
+	public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest request) {
+
+		Authentication authentication = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(request.getUsernameOrEmail(), request.getPassword()));
+
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+
+		String jwt = tokenProvider.generateToken(authentication);
+
+		return ResponseEntity.ok(new JWTAuthenticationResponse(jwt));
 	}
 
-	@RequestMapping(value = "/register", method = RequestMethod.POST, produces = "application/json") public StringResponse register(
-			@RequestParam String email, @RequestParam String username, @RequestParam String password) {
-		return new StringResponse(this.userService.register(email,username,password));
-	}
+	@PostMapping("/register")
+	public ResponseEntity registerUser( @RequestBody RegisterRequest request) {
 
-	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json") public StringResponse login(
-			@RequestParam String username, @RequestParam String password, HttpServletRequest request, HttpServletResponse response) {
-		String result="Login failed";
-		if (request.getSession().getAttribute("token") == null){
-			response.setStatus(HttpStatus.UNAUTHORIZED.value());
-			String token = this.userService.login(username, password);
-			if (token != null) {
-				request.getSession().setAttribute("token", token);
-				response.setStatus(HttpStatus.ACCEPTED.value());
-				result = "Login success!";
-			}
-		}else{
-			response.setStatus(HttpStatus.CONFLICT.value());
-			result = "You're already logged";
+		ResponseEntity response = new ResponseEntity(new ApiResponse(true, "User registered successfully"),HttpStatus.ACCEPTED);
+
+		try {
+			this.userService.register(request.getEmail(), request.getUsername(), request.getPassword());
+		} catch (ExistingEmailException e) {
+			response = new ResponseEntity(new ApiResponse(false,"Email already in use"),HttpStatus.BAD_REQUEST);
+		} catch (ExistingUsernameException e) {
+			response = new ResponseEntity(new ApiResponse(false,"Username already in use"),HttpStatus.BAD_REQUEST);
+		}finally {
+			return response;
 		}
-		return new StringResponse(result);
-	}
-
-	@RequestMapping(value = "/logout", method = RequestMethod.GET, produces = "application/json") private StringResponse logout(@SessionAttribute(value = "token",required = false) String token, HttpServletRequest request) {
-		StringResponse response = null;
-		if(token != null){
-			request.getSession().removeAttribute("token");
-			this.userService.logout(token);
-			response = new StringResponse("Logout successful");
-		}
-		return response;
 	}
 }

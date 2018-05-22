@@ -1,4 +1,4 @@
-package com.globant.bootcamp.util;
+package com.globant.bootcamp.payload;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
