@@ -5,8 +5,6 @@ import com.globant.bootcamp.exception.ExistingEmailException;
 import com.globant.bootcamp.exception.ExistingUsernameException;
 import com.globant.bootcamp.payload.ApiResponse;
 import com.globant.bootcamp.payload.JWTAuthenticationResponse;
-import com.globant.bootcamp.payload.LoginRequest;
-import com.globant.bootcamp.payload.RegisterRequest;
 import com.globant.bootcamp.security.JWTTokenProvider;
 import com.globant.bootcamp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +31,10 @@ import org.springframework.web.bind.annotation.*;
 
 
 	@PostMapping("/login")
-	public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest request) {
+	public ResponseEntity<?> authenticateUser(@RequestParam String username, @RequestParam String password) {
 
 		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(request.getUsernameOrEmail(), request.getPassword()));
+				new UsernamePasswordAuthenticationToken(username, password));
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -46,12 +44,12 @@ import org.springframework.web.bind.annotation.*;
 	}
 
 	@PostMapping("/register")
-	public ResponseEntity registerUser( @RequestBody RegisterRequest request) {
+	public ResponseEntity registerUser( @RequestParam String email, @RequestParam String username, @RequestParam String password) {
 
 		ResponseEntity response = new ResponseEntity(new ApiResponse(true, "User registered successfully"),HttpStatus.ACCEPTED);
 
 		try {
-			this.userService.register(request.getEmail(), request.getUsername(), request.getPassword());
+			this.userService.register(email, username, password);
 		} catch (ExistingEmailException e) {
 			response = new ResponseEntity(new ApiResponse(false,"Email already in use"),HttpStatus.BAD_REQUEST);
 		} catch (ExistingUsernameException e) {
