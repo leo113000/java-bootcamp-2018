@@ -6,8 +6,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@NoArgsConstructor @Getter @Setter @Entity @Table(name = "users") public class User {
-	@Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "id") private Long id;
+@NoArgsConstructor @Getter @Setter @Entity @Table(name = "users", uniqueConstraints = { @UniqueConstraint(columnNames = { "username" }),
+		@UniqueConstraint(columnNames = { "email" }) }) public class User {
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "id") private Long id;
 	@Column(name = "email") private String email;
 	@Column(name = "username") private String username;
 	@Column(name = "password") private String password;

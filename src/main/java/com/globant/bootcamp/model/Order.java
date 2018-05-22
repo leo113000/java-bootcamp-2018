@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @NoArgsConstructor @Getter @Setter @Entity @Table(name = "orders") public class Order {
-	@Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "id") private Long id;
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "id") private Long id;
 	@OneToOne @JoinColumn(name = "cart_id") private Cart cart;
 	@Column(name = "date") private Date date;
 	@Column(name = "total") private double total;

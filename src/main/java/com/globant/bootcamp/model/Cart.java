@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor @Entity @Table(name = "carts") public class Cart {
-	@Getter @Setter @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "id") private Long id;
+	@Getter @Setter @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "id") private Long id;
 	@Getter @Setter @OneToOne @JoinColumn(name = "user_id") private User user;
 
 	@Getter @Setter @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.EAGER) private List<ProductLine> productList;

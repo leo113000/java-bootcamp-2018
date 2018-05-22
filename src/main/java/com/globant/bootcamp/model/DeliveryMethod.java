@@ -6,7 +6,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@NoArgsConstructor @Getter @Setter @Entity @Table(name = "deliver_methods") public class DeliveryMethod {
-	@Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "id") private Long id;
+@NoArgsConstructor @Getter @Setter @Entity @Table(name = "deliver_methods", uniqueConstraints = {
+		@UniqueConstraint(columnNames = { "name" }) }) public class DeliveryMethod {
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "id") private Long id;
 	@Column(name = "name") private String name;
 }

@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @NoArgsConstructor @Getter @Setter @AllArgsConstructor @Entity @Table(name = "products") public class Product {
-	@Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "id") private Long id;
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "id") private Long id;
 	@NotEmpty(message = "Product Name is mandatory") @Column(name = "name") private String name;
 	@NotNull(message = "Please provide some price") @Column(name = "price") private double price;
 	@Column(name = "stock") private int stock;
