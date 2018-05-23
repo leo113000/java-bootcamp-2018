@@ -20,9 +20,9 @@ import java.util.List;
 	private double total;
 
 	public double getTotal() {
-		AtomicDouble total = new AtomicDouble();
-		this.productList.forEach(x -> total.addAndGet(x.getSubtotal()));
-		return total.get();
+		AtomicDouble atomicTotal = new AtomicDouble();
+		this.productList.forEach(x -> atomicTotal.addAndGet(x.getSubtotal()));
+		return atomicTotal.get();
 	}
 
 
