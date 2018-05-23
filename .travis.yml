@@ -7,13 +7,16 @@ sudo: true
 dist: precise
 
 install:
-- mvn -N io.takari:maven:wrapper
 - ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 
 script: mvn clean test
 
-addons:
-  mariadb: '10.0'
+test:
+  adapter: mysql2
+  database: demo_api
+  username: demo_api_admin
+  password: supersecretpassword
+  encoding: utf8
 
 notifications:
   email:
