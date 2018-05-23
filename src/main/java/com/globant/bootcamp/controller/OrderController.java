@@ -2,18 +2,17 @@ package com.globant.bootcamp.controller;
 
 import com.globant.bootcamp.model.Cart;
 import com.globant.bootcamp.model.Order;
+import com.globant.bootcamp.payload.Shopping.OrderRequest;
+import com.globant.bootcamp.payload.Shopping.OrderResponse;
 import com.globant.bootcamp.security.CurrentUser;
 import com.globant.bootcamp.security.UserCredentials;
 import com.globant.bootcamp.service.CartService;
 import com.globant.bootcamp.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/order")
@@ -28,15 +27,17 @@ public class OrderController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
-	public List<Order> getOrders(HttpServletResponse response) {
-		return this.orderService.getAll();
+	public List<OrderResponse> getOrders(@CurrentUser UserCredentials userCrendentials) {
+		return this.orderService.getUserOrders(userCrendentials.getUser()).stream().map(OrderResponse::new).collect(Collectors.toList());
 	}
 
 	@RequestMapping(method = RequestMethod.POST, produces = "application/json")
-	public Order createOrder
-			(@CurrentUser UserCredentials currentUser,@RequestParam Long paymentMethodId, @RequestParam Long deliverMethodId, @RequestParam Long statusId) {
+	public OrderResponse createOrder
+			(@CurrentUser UserCredentials currentUser,@ModelAttribute OrderRequest request) {
 		Cart sp = this.cartService.getCart(currentUser.getUser());
-		return this.orderService.createOrder(sp,paymentMethodId, deliverMethodId, statusId);
+		Order newOrder = this.orderService.createOrder(currentUser.getUser(), sp,request.getPaymentMethodId(), request.getDeliverMethodId());
+		this.cartService.clearCart(currentUser.getUser());
+		return new OrderResponse(newOrder);
 	}
 
 }

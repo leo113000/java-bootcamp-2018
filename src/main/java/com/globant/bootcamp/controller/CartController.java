@@ -1,6 +1,9 @@
 package com.globant.bootcamp.controller;
 
 import com.globant.bootcamp.model.Cart;
+import com.globant.bootcamp.payload.ApiResponse;
+import com.globant.bootcamp.payload.Shopping.CartResponse;
+import com.globant.bootcamp.payload.Shopping.ProductCartRequest;
 import com.globant.bootcamp.security.CurrentUser;
 import com.globant.bootcamp.security.UserCredentials;
 import com.globant.bootcamp.service.CartService;
@@ -24,32 +27,33 @@ import org.springframework.web.bind.annotation.*;
 
 	@PreAuthorize("hasAuthority('USER')")
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
-	public Cart getCart(@CurrentUser UserCredentials currentUser) {
-		return cartService.getCart(currentUser.getUser());
+	public CartResponse getCart(@CurrentUser UserCredentials currentUser) {
+		return new CartResponse(cartService.getCart(currentUser.getUser()));
 	}
 
 	@PreAuthorize("hasAuthority('USER')")
-	@RequestMapping(method = RequestMethod.POST, produces = "application/json") public Cart addProductToCart(
-			@RequestParam Long productId, @RequestParam int qty, @CurrentUser UserCredentials currentUser) {
-		return this.cartService.addProduct(productId,qty,currentUser.getUser());
+	@RequestMapping(method = RequestMethod.POST, produces = "application/json") public CartResponse addProductToCart(
+			@ModelAttribute ProductCartRequest request, @CurrentUser UserCredentials currentUser) {
+		return new CartResponse(cartService.addProduct(request.getProductId(),request.getQty(),currentUser.getUser()));
 	}
 
 	@PreAuthorize("hasAuthority('USER')")
-	@RequestMapping(method = RequestMethod.DELETE, produces = "application/json") public void emptyShoppingCart(
+	@RequestMapping(method = RequestMethod.DELETE, produces = "application/json") public ApiResponse emptyShoppingCart(
 			@CurrentUser UserCredentials currentUser) {
 		this.cartService.clearCart(currentUser.getUser());
+		return new ApiResponse(true,"Cart clear");
 	}
 
 	@PreAuthorize("hasAuthority('USER')")
-	@RequestMapping(value = "/{productId}", method = RequestMethod.PUT, produces = "application/json") public Cart updateProductLine(
-			@RequestParam Long productId, @RequestParam int qty, @CurrentUser UserCredentials currentUser) {
-		return this.cartService.updateLineProduct(productId, qty, currentUser.getUser());
+	@RequestMapping(value = "/{productId}", method = RequestMethod.PUT, produces = "application/json") public CartResponse updateProductLine(
+			@ModelAttribute ProductCartRequest request, @CurrentUser UserCredentials currentUser) {
+		return new CartResponse(this.cartService.updateLineProduct(request.getProductId(),request.getQty(), currentUser.getUser()));
 	}
 
 	@PreAuthorize("hasAuthority('USER')")
-	@RequestMapping(value = "/{productId}", method = RequestMethod.DELETE, produces = "application/json") public Cart removeProduct(
-			@RequestParam Long productId, @CurrentUser UserCredentials currentUser) {
-		return this.cartService.removeProduct(productId, currentUser.getUser());
+	@RequestMapping(value = "/{productId}", method = RequestMethod.DELETE, produces = "application/json") public CartResponse removeProduct(
+			@ModelAttribute ProductCartRequest request, @CurrentUser UserCredentials currentUser) {
+		return new CartResponse(this.cartService.removeProduct(request.getProductId(), currentUser.getUser()));
 	}
 
 }

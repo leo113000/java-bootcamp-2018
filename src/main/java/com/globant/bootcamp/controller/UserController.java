@@ -4,7 +4,9 @@ package com.globant.bootcamp.controller;
 import com.globant.bootcamp.exception.ExistingEmailException;
 import com.globant.bootcamp.exception.ExistingUsernameException;
 import com.globant.bootcamp.payload.ApiResponse;
-import com.globant.bootcamp.payload.JWTAuthenticationResponse;
+import com.globant.bootcamp.payload.Auth.JWTAuthenticationResponse;
+import com.globant.bootcamp.payload.Auth.LoginRequest;
+import com.globant.bootcamp.payload.Auth.RegisterRequest;
 import com.globant.bootcamp.security.JWTTokenProvider;
 import com.globant.bootcamp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +31,11 @@ import org.springframework.web.bind.annotation.*;
 	@Autowired JWTTokenProvider tokenProvider;
 
 
-
 	@PostMapping("/login")
-	public ResponseEntity<?> authenticateUser(@RequestParam String username, @RequestParam String password) {
+	public ResponseEntity<?> authenticateUser(@ModelAttribute LoginRequest request) {
 
 		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(username, password));
+				new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -44,12 +45,12 @@ import org.springframework.web.bind.annotation.*;
 	}
 
 	@PostMapping("/register")
-	public ResponseEntity registerUser( @RequestParam String email, @RequestParam String username, @RequestParam String password) {
+	public ResponseEntity registerUser(@ModelAttribute RegisterRequest request) {
 
 		ResponseEntity response = new ResponseEntity(new ApiResponse(true, "User registered successfully"),HttpStatus.ACCEPTED);
 
 		try {
-			this.userService.register(email, username, password);
+			this.userService.register(request.getEmail(), request.getUsername(), request.getPassword());
 		} catch (ExistingEmailException e) {
 			response = new ResponseEntity(new ApiResponse(false,"Email already in use"),HttpStatus.BAD_REQUEST);
 		} catch (ExistingUsernameException e) {
