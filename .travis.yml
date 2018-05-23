@@ -2,21 +2,24 @@ language: java
 jdk:
 - oraclejdk8
 
-sudo: true
+sudo: required
 
-dist: precise
+services:
+  - mysql
+
+dist: trusty
 
 install:
+- mvn -N io.takari:maven:wrapper
 - ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+
 
 script: mvn clean test
 
-test:
-  adapter: mysql2
-  database: demo_api
-  username: demo_api_admin
-  password: supersecretpassword
-  encoding: utf8
+before_script:
+  - mysql -u root -e 'CREATE DATABASE demo_api;'
+  - mysql -u root -e 'CREATE USER 'demo_api_admin'@'localhost' IDENTIFIED BY 'supersecretpassword';'
+  - mysql -u root -e 'GRANT ALL ON demo_api.* TO 'demo_api_admin'@'localhost';'
 
 notifications:
   email:
