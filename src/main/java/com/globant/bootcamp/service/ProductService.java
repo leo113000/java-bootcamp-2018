@@ -26,12 +26,12 @@ public class ProductService {
 		return this.productRepository.findAll();
 	}
 
-	public Product getProductByName(String name){
-		return this.productRepository.findByName(name);
+	public Product getProductByName(String url){
+		return this.productRepository.findByUrl(url);
 	}
 
-	public List<Product> getProductsByCategory(String categoryName){
-		return this.productRepository.findByCategory(this.categoryRepository.findByName(categoryName));
+	public List<Product> getProductsByCategory(String url){
+		return this.productRepository.findByCategories(this.categoryRepository.findByUrl(url));
 	}
 
 	public List<Category> getAllCategories(){

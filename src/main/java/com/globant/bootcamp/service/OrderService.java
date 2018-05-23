@@ -6,6 +6,7 @@ import com.globant.bootcamp.persistence.OrderRepository;
 import com.globant.bootcamp.persistence.PaymentMethodRepository;
 import com.globant.bootcamp.persistence.StatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -20,6 +21,9 @@ public class OrderService {
 	@Autowired private DeliverMethodRepository deliverMethodRepository;
 	@Autowired private StatusRepository statusRepository;
 
+	@Value("${app.initialOrderStatusId}")
+	private Long INITIAL_ORDER_STATUS_ID;
+
 	public OrderService(OrderRepository orderRepository, PaymentMethodRepository paymentMethodRepository,
 			DeliverMethodRepository deliverMethodRepository, StatusRepository statusRepository) {
 		this.orderRepository = orderRepository;
@@ -28,19 +32,20 @@ public class OrderService {
 		this.statusRepository = statusRepository;
 	}
 
-	public List<Order> getAll(){
-		return this.orderRepository.findAll();
-	}
-
-	public Order createOrder(Cart cart, Long paymentMethodId, Long deliverMethodId, Long statusId){
+	public Order createOrder(User user,Cart cart, Long paymentMethodId, Long deliverMethodId){
 		Order newOrder = null;
 		Optional<PaymentMethod> pmOp = this.paymentMethodRepository.findById(paymentMethodId);
 		Optional<DeliveryMethod> dmOp = this.deliverMethodRepository.findById(deliverMethodId);
-		Optional<Status> sOp = this.statusRepository.findById(statusId);
+		Optional<Status> sOp = this.statusRepository.findById(INITIAL_ORDER_STATUS_ID);
 
 		if(pmOp.isPresent() && dmOp.isPresent() && sOp.isPresent()){
-			newOrder = this.orderRepository.save(new Order(cart, new Date(), dmOp.get(), pmOp.get(), sOp.get()));
+			newOrder = this.orderRepository.save(new Order(user, new Date(), dmOp.get(), pmOp.get(), sOp.get()));
+			newOrder.addCartLines(cart);
 		}
 		return newOrder;
+	}
+
+	public List<Order> getUserOrders(User user) {
+		return this.orderRepository.findAllByUser(user);
 	}
 }
