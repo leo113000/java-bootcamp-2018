@@ -30,7 +30,6 @@ public class UserService implements UserDetailsService {
 				.orElseThrow(() ->
 						new UsernameNotFoundException("User not found")
 				);
-
 		return UserCredentials.create(user);
 	}
 
@@ -38,9 +37,7 @@ public class UserService implements UserDetailsService {
 	@Transactional
 	public UserDetails loadUserById(Long id) {
 		User user = userRepository.findById(id).orElseThrow(
-				() -> new UsernameNotFoundException("User not found with that id")
-		);
-
+				() -> new UsernameNotFoundException("User not found with that id"));
 		return UserCredentials.create(user);
 	}
 
@@ -56,6 +53,4 @@ public class UserService implements UserDetailsService {
 
 		User user = userRepository.save(new User(email, username, passwordEncoder.encode(password)));
 	}
-
-
 }
