@@ -26,10 +26,10 @@ import static org.mockito.Mockito.when;
 	@Test public void givenAShoppingCartWithProductsWhenGetAllTheProductsThenReturnAListOfProducts() {
 		Product a = mock(Product.class);
 		Product b = mock(Product.class);
-
+		when(a.getId()).thenReturn((long)1);
+		when(b.getId()).thenReturn((long)2);
 		cart.addProduct(a,1);
 		cart.addProduct(b,4);
-
 		Iterator<ProductLine> iter = cart.getProductList().iterator();
 		ProductLine lineA = iter.next();
 		ProductLine lineB = iter.next();
