@@ -1,6 +1,7 @@
 package com.globant.bootcamp.exception;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -18,5 +19,9 @@ public class ResourceNotFoundException extends RuntimeException {
 		this.resourceName = resourceName;
 		this.fieldName = fieldName;
 		this.fieldValue = fieldValue;
+	}
+
+	public ResourceNotFoundException() {
+		super("Resource not found");
 	}
 }
