@@ -1,5 +1,7 @@
 package com.globant.bootcamp.service;
 
+import com.globant.bootcamp.exception.BadRequestException;
+import com.globant.bootcamp.exception.ResourceNotFoundException;
 import com.globant.bootcamp.model.Category;
 import com.globant.bootcamp.model.Product;
 import com.globant.bootcamp.persistence.CategoryRepository;
@@ -26,8 +28,8 @@ public class ProductService {
 		return this.productRepository.findAll();
 	}
 
-	public Product getProductByName(String url){
-		return this.productRepository.findByUrl(url);
+	public Product getProductByUrl(String url){
+		return this.productRepository.findByUrl(url).orElseThrow(ResourceNotFoundException::new);
 	}
 
 	public List<Product> getProductsByCategory(String url){

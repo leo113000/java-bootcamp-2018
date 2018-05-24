@@ -7,7 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @NoArgsConstructor @Entity @Table(name = "order_lines")public class OrderLine {
-	@Getter @Setter @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "id") private String id;
+	@Getter @Setter @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "id") private Long id;
 
 	@Getter @Setter @ManyToOne @JoinColumn(name = "product_id") private Product product;
 
