@@ -8,12 +8,13 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @NoArgsConstructor @Entity @Table(name = "carts") public class Cart {
 	@Getter @Setter @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "id") private Long id;
 	@Getter @Setter @OneToOne @JoinColumn(name = "user_id") private User user;
 
-	@Getter @Setter @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.EAGER) private List<ProductLine> productList;
+	@Getter @Setter @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER) private List<ProductLine> productList;
 
 	@Setter
 	@Column(name = "total")
@@ -41,7 +42,13 @@ import java.util.List;
 	 * @param qty quantity
 	 */
 	public void addProduct(Product p, int qty) {
-		this.productList.add(new ProductLine(p,qty));
+		Optional<ProductLine> opProduct = productList.stream().filter(x -> x.getProduct().getId().equals(p.getId())).findFirst();
+		if(opProduct.isPresent()){
+			opProduct.get().setQty(opProduct.get().getQty() + qty);
+		}else{
+			this.productList.add(new ProductLine(p,qty,this));
+		}
+
 	}
 
 	/**
