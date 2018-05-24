@@ -1,7 +1,5 @@
 package com.globant.bootcamp.controller;
 
-import com.globant.bootcamp.model.Category;
-import com.globant.bootcamp.model.Product;
 import com.globant.bootcamp.payload.Product.CategoryResponse;
 import com.globant.bootcamp.payload.Product.ProductResponse;
 import com.globant.bootcamp.service.ProductService;
@@ -25,7 +23,7 @@ import java.util.stream.Collectors;
 
 	@RequestMapping(value = "/{url}", method = RequestMethod.GET, produces = "application/json") public ProductResponse getProductByName(
 			@PathVariable String url) {
-		return new ProductResponse(this.productService.getProductByName(url));
+		return new ProductResponse(this.productService.getProductByUrl(url));
 	}
 
 	@RequestMapping(value = "/categories", method = RequestMethod.GET, produces = "application/json") public List<CategoryResponse> getCategoriesNames() {
