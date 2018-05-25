@@ -1,5 +1,6 @@
 package com.globant.bootcamp.controller;
 
+import com.globant.bootcamp.exception.ResourceNotFoundException;
 import com.globant.bootcamp.model.Cart;
 import com.globant.bootcamp.payload.ApiResponse;
 import com.globant.bootcamp.payload.Shopping.CartResponse;
@@ -8,6 +9,8 @@ import com.globant.bootcamp.security.CurrentUser;
 import com.globant.bootcamp.security.UserCredentials;
 import com.globant.bootcamp.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,9 +35,14 @@ import org.springframework.web.bind.annotation.*;
 	}
 
 	@PreAuthorize("hasAuthority('USER')")
-	@RequestMapping(method = RequestMethod.POST, produces = "application/json") public CartResponse addProductToCart(
+	@RequestMapping(method = RequestMethod.POST, produces = "application/json") public ResponseEntity<?> addProductToCart(
 			@ModelAttribute ProductCartRequest request, @CurrentUser UserCredentials currentUser) {
-		return new CartResponse(cartService.addProduct(request.getProductId(),request.getQty(),currentUser.getUser()));
+		try {
+			CartResponse cartResponse = new CartResponse(cartService.addProduct(request.getProductId(),request.getQty(),currentUser.getUser()));
+			return new ResponseEntity<>(cartResponse,HttpStatus.ACCEPTED);
+		} catch (ResourceNotFoundException e) {
+			return new ResponseEntity<>(new ApiResponse(false,"That product's id doesn't exists"),HttpStatus.NOT_FOUND);
+		}
 	}
 
 	@PreAuthorize("hasAuthority('USER')")
@@ -45,9 +53,14 @@ import org.springframework.web.bind.annotation.*;
 	}
 
 	@PreAuthorize("hasAuthority('USER')")
-	@RequestMapping(value = "/{productId}", method = RequestMethod.PUT, produces = "application/json") public CartResponse updateProductLine(
+	@RequestMapping(value = "/{productId}", method = RequestMethod.PUT, produces = "application/json") public ResponseEntity<?> updateProductLine(
 			@ModelAttribute ProductCartRequest request, @CurrentUser UserCredentials currentUser) {
-		return new CartResponse(this.cartService.updateLineProduct(request.getProductId(),request.getQty(), currentUser.getUser()));
+		try {
+			CartResponse cartResponse = new CartResponse(this.cartService.updateLineProduct(request.getProductId(), request.getQty(), currentUser.getUser()));
+			return new ResponseEntity<>(cartResponse,HttpStatus.ACCEPTED);
+		} catch (ResourceNotFoundException e) {
+			return new ResponseEntity<>(new ApiResponse(false,"That product's id doesn't exists"),HttpStatus.NOT_FOUND);
+		}
 	}
 
 	@PreAuthorize("hasAuthority('USER')")

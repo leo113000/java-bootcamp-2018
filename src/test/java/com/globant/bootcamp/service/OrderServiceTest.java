@@ -49,7 +49,7 @@ import static org.mockito.Mockito.when;
 
 	@Test(expected = BadRequestException.class)
 	public void whenSomeParameterIsIncorrectThenThrowAnException() throws BadRequestException {
-		this.orderService.createOrder(testUser,new Cart(testUser),(long) 2,(long) 3);
+		this.orderService.createOrder(testUser,mockCart(),(long) 2,(long) 3);
 	}
 
 	@Test(expected = EmptyCartException.class)

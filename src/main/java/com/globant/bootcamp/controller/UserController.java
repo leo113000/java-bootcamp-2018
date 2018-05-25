@@ -45,18 +45,15 @@ import org.springframework.web.bind.annotation.*;
 	}
 
 	@PostMapping("/register")
-	public ResponseEntity registerUser(@ModelAttribute RegisterRequest request) {
-
-		ResponseEntity response = new ResponseEntity(new ApiResponse(true, "User registered successfully"),HttpStatus.ACCEPTED);
+	public ResponseEntity<?> registerUser(@ModelAttribute RegisterRequest request) {
 
 		try {
 			this.userService.register(request.getEmail(), request.getUsername(), request.getPassword());
+			return new ResponseEntity<>(new ApiResponse(true, "User registered successfully"),HttpStatus.ACCEPTED);
 		} catch (ExistingEmailException e) {
-			response = new ResponseEntity(new ApiResponse(false,"Email already in use"),HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new ApiResponse(false,"Email already in use"),HttpStatus.BAD_REQUEST);
 		} catch (ExistingUsernameException e) {
-			response = new ResponseEntity(new ApiResponse(false,"Username already in use"),HttpStatus.BAD_REQUEST);
-		}finally {
-			return response;
+			return new ResponseEntity<>(new ApiResponse(false,"Username already in use"),HttpStatus.BAD_REQUEST);
 		}
 	}
 }

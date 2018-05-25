@@ -1,7 +1,10 @@
 package com.globant.bootcamp.controller;
 
+import com.globant.bootcamp.exception.BadRequestException;
+import com.globant.bootcamp.exception.EmptyCartException;
 import com.globant.bootcamp.model.Cart;
 import com.globant.bootcamp.model.Order;
+import com.globant.bootcamp.payload.ApiResponse;
 import com.globant.bootcamp.payload.Shopping.OrderRequest;
 import com.globant.bootcamp.payload.Shopping.OrderResponse;
 import com.globant.bootcamp.security.CurrentUser;
@@ -9,6 +12,8 @@ import com.globant.bootcamp.security.UserCredentials;
 import com.globant.bootcamp.service.CartService;
 import com.globant.bootcamp.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,12 +37,17 @@ public class OrderController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST, produces = "application/json")
-	public OrderResponse createOrder
-			(@CurrentUser UserCredentials currentUser,@ModelAttribute OrderRequest request) {
+	public ResponseEntity<?> createOrder (@CurrentUser UserCredentials currentUser,@ModelAttribute OrderRequest request) {
 		Cart sp = this.cartService.getCart(currentUser.getUser());
-		Order newOrder = this.orderService.createOrder(currentUser.getUser(), sp,request.getPaymentMethodId(), request.getDeliverMethodId());
-		this.cartService.clearCart(currentUser.getUser());
-		return new OrderResponse(newOrder);
+		try {
+			Order newOrder = this.orderService.createOrder(currentUser.getUser(), sp,request.getPaymentMethodId(), request.getDeliverMethodId());
+			this.cartService.clearCart(currentUser.getUser());
+			return new ResponseEntity<>(new OrderResponse(newOrder),HttpStatus.ACCEPTED);
+		} catch (BadRequestException e) {
+			return new ResponseEntity<>(new ApiResponse(false,"Wrong parameters"),HttpStatus.BAD_REQUEST);
+		} catch (EmptyCartException e) {
+			return new ResponseEntity<>(new ApiResponse(false,"The cart is empty"), HttpStatus.BAD_REQUEST);
+		}
 	}
 
 }

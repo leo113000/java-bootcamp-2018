@@ -1,4 +1,4 @@
 package com.globant.bootcamp.exception;
 
-public class EmptyCartException extends BadRequestException {
+public class EmptyCartException extends RuntimeException {
 }
