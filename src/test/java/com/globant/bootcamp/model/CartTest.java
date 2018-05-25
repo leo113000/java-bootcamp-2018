@@ -65,6 +65,18 @@ import static org.mockito.Mockito.when;
 				.findFirst().orElse(null));
 	}
 
+	 @Test
+	 public void whenAddTheSameProductTwiceThenUpdateTheQty(){
+		 Product a = mock(Product.class);
+		 Product b = mock(Product.class);
+		 when(a.getId()).thenReturn((long)1);
+		 when(b.getId()).thenReturn((long)1);
+		 cart.addProduct(a,1);
+		 cart.addProduct(b,4);
+		 assertEquals(1,this.cart.getProductList().size());
+		 assertEquals(5,this.cart.getProductList().get(0).getQty());
+	 }
+
 	@Test
 	public void givenACartWithElementsWhenGetTheTotalThenReturnTheAdditionOfAllTheProductLines(){
 		Product a = mock(Product.class);

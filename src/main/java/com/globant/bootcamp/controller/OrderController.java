@@ -28,7 +28,7 @@ public class OrderController {
 
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
 	public List<OrderResponse> getOrders(@CurrentUser UserCredentials userCrendentials) {
-		return this.orderService.getUserOrders(userCrendentials.getUser()).stream().map(OrderResponse::new).collect(Collectors.toList());
+		return this.orderService.getNotFinishedUserOrders(userCrendentials.getUser()).stream().map(OrderResponse::new).collect(Collectors.toList());
 	}
 
 	@RequestMapping(method = RequestMethod.POST, produces = "application/json")

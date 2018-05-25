@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 
 	@RequestMapping(value = "/categories/{url}", method = RequestMethod.GET, produces = "application/json") public List<ProductResponse> getProductsByCategory(
 			@PathVariable String url) {
-		return this.productService.getProductsByCategory(url).stream().map(ProductResponse::new).collect(Collectors.toList());
+		return this.productService.getProductsByCategoryUrl(url).stream().map(ProductResponse::new).collect(Collectors.toList());
 	}
 
 }

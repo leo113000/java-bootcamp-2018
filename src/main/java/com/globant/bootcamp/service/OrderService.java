@@ -1,5 +1,7 @@
 package com.globant.bootcamp.service;
 
+import com.globant.bootcamp.exception.BadRequestException;
+import com.globant.bootcamp.exception.EmptyCartException;
 import com.globant.bootcamp.model.*;
 import com.globant.bootcamp.persistence.DeliverMethodRepository;
 import com.globant.bootcamp.persistence.OrderRepository;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
@@ -21,8 +24,8 @@ public class OrderService {
 	@Autowired private DeliverMethodRepository deliverMethodRepository;
 	@Autowired private StatusRepository statusRepository;
 
-	@Value("${app.initialOrderStatusId}")
-	private Long INITIAL_ORDER_STATUS_ID;
+	private final Long INITIAL_ORDER_STATUS_ID = (long)1;
+	private final Long LAST_ORDER_STATUS_ID = (long)3;
 
 	public OrderService(OrderRepository orderRepository, PaymentMethodRepository paymentMethodRepository,
 			DeliverMethodRepository deliverMethodRepository, StatusRepository statusRepository) {
@@ -32,20 +35,30 @@ public class OrderService {
 		this.statusRepository = statusRepository;
 	}
 
-	public Order createOrder(User user,Cart cart, Long paymentMethodId, Long deliverMethodId){
-		Order newOrder = null;
+	public Order createOrder(User user,Cart cart, Long paymentMethodId, Long deliverMethodId) throws BadRequestException, EmptyCartException{
+		Order newOrder;
+
+		if(cart.getProductList().isEmpty()){
+			throw new EmptyCartException();
+		}
+
 		Optional<PaymentMethod> pmOp = this.paymentMethodRepository.findById(paymentMethodId);
-		Optional<DeliveryMethod> dmOp = this.deliverMethodRepository.findById(deliverMethodId);
+		Optional<DeliverMethod> dmOp = this.deliverMethodRepository.findById(deliverMethodId);
 		Optional<Status> sOp = this.statusRepository.findById(INITIAL_ORDER_STATUS_ID);
 
 		if(pmOp.isPresent() && dmOp.isPresent() && sOp.isPresent()){
-			newOrder = this.orderRepository.save(new Order(user, new Date(), dmOp.get(), pmOp.get(), sOp.get()));
+			newOrder = new Order(user, new Date(), dmOp.get(), pmOp.get(), sOp.get());
 			newOrder.addCartLines(cart);
+			this.orderRepository.save(newOrder);
+		}else{
+			throw new BadRequestException();
 		}
 		return newOrder;
 	}
 
-	public List<Order> getUserOrders(User user) {
-		return this.orderRepository.findAllByUser(user);
+	public List<Order> getNotFinishedUserOrders(User user) {
+		System.out.println(LAST_ORDER_STATUS_ID);
+		return this.orderRepository.findAllByUser(user).stream()
+				.filter(x -> !x.getStatus().getId().equals(LAST_ORDER_STATUS_ID)).collect(Collectors.toList());
 	}
 }

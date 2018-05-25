@@ -1,5 +1,6 @@
 package com.globant.bootcamp.service;
 
+import com.globant.bootcamp.exception.ResourceNotFoundException;
 import com.globant.bootcamp.model.Product;
 import com.globant.bootcamp.model.Cart;
 import com.globant.bootcamp.model.User;
@@ -17,11 +18,12 @@ import java.util.Optional;
 
 	/**
 	 * Constructor
-	 *
-	 * @param repo instance of the Repository
+	 * @param cartRepo
+	 * @param productRepo
 	 */
-	public CartService(CartRepository repo) {
-		this.cartRepository = repo;
+	public CartService(CartRepository cartRepo,ProductRepository productRepo) {
+		this.cartRepository = cartRepo;
+		this.productRepository = productRepo;
 	}
 
 	/**
@@ -50,14 +52,12 @@ import java.util.Optional;
 	 * @param user
 	 * @return the cart with new product or null if the product not exists
 	 */
-	public Cart addProduct(Long productId, int qty, User user) {
-		Cart cart = null;
-		Optional<Product> productOptional = productRepository.findById(productId);
-		if(productOptional.isPresent()){
-		 	cart = this.getCart(user);
-			cart.addProduct(productOptional.get(),qty);
-			this.cartRepository.save(cart);
-		}
+	public Cart addProduct(Long productId, int qty, User user) throws ResourceNotFoundException{
+		Cart cart = this.getCart(user);
+		Product productOptional = productRepository.findById(productId).orElseThrow(ResourceNotFoundException::new);
+		cart.addProduct(productOptional,qty);
+		this.cartRepository.save(cart);
+
 		return cart;
 	}
 
@@ -68,7 +68,7 @@ import java.util.Optional;
 	 * @param user
 	 * @return
 	 */
-	public Cart updateLineProduct(Long productId, int qty, User user){
+	public Cart updateLineProduct(Long productId, int qty, User user) throws ResourceNotFoundException{
 		Cart cart = this.getCart(user);
 		cart.removeProductById(productId);
 		return addProduct(productId,qty,user);

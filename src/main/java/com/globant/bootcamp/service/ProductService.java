@@ -28,12 +28,12 @@ public class ProductService {
 		return this.productRepository.findAll();
 	}
 
-	public Product getProductByUrl(String url){
+	public Product getProductByUrl(String url) throws ResourceNotFoundException {
 		return this.productRepository.findByUrl(url).orElseThrow(ResourceNotFoundException::new);
 	}
 
-	public List<Product> getProductsByCategory(String url){
-		return this.productRepository.findByCategories(this.categoryRepository.findByUrl(url));
+	public List<Product> getProductsByCategoryUrl(String url) throws ResourceNotFoundException{
+		return this.productRepository.findByCategories(this.categoryRepository.findByUrl(url).orElseThrow(ResourceNotFoundException::new));
 	}
 
 	public List<Category> getAllCategories(){

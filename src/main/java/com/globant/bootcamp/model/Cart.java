@@ -23,7 +23,8 @@ import java.util.Optional;
 	public double getTotal() {
 		AtomicDouble atomicTotal = new AtomicDouble();
 		this.productList.forEach(x -> atomicTotal.addAndGet(x.getSubtotal()));
-		return atomicTotal.get();
+		this.setTotal(atomicTotal.get());
+		return this.total;
 	}
 
 

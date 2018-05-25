@@ -21,7 +21,7 @@ public class OrderResponse {
 		this.date = orderModel.getDate();
 		this.total = orderModel.getTotal();
 		this.payment_method = orderModel.getPaymentMethod().getName();
-		this.deliver_method = orderModel.getDeliveryMethod().getName();
+		this.deliver_method = orderModel.getDeliverMethod().getName();
 		this.status = orderModel.getStatus().getName();
 		this.lineResponseList = orderModel.getOrderLines().stream().map(LineResponse::new).collect(Collectors.toList());
 	}
