@@ -14,11 +14,12 @@ import javax.persistence.*;
 	@Getter @Setter @Column(name = "qty") private int qty;
 	@Setter @Column(name = "subtotal") private double subtotal;
 
-	@ManyToOne @JoinColumn(name = "order_id") private Order order;
+	@Getter @Setter @ManyToOne @JoinColumn(name = "order_id") private Order order;
 
-	public OrderLine(Product product, int qty) {
+	public OrderLine(Product product, int qty,Order order) {
 		this.product = product;
 		this.qty = qty;
+		this.order = order;
 	}
 
 	public double getSubtotal(){

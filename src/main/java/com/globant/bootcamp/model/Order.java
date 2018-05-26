@@ -31,7 +31,7 @@ import java.util.List;
 	}
 
 	public void addCartLines(Cart cart) {
-		cart.getProductList().forEach( x -> this.orderLines.add(new OrderLine(x.getProduct(),x.getQty())) );
+		cart.getProductList().forEach( x -> this.orderLines.add(new OrderLine(x.getProduct(),x.getQty(),this)) );
 	}
 
 	public double getTotal() {
