@@ -49,7 +49,7 @@ import org.springframework.web.bind.annotation.*;
 
 		try {
 			this.userService.register(request.getEmail(), request.getUsername(), request.getPassword());
-			return new ResponseEntity<>(new ApiResponse(true, "User registered successfully"),HttpStatus.ACCEPTED);
+			return new ResponseEntity<>(new ApiResponse(true, "User registered successfully"),HttpStatus.OK);
 		} catch (ExistingEmailException e) {
 			return new ResponseEntity<>(new ApiResponse(false,"Email already in use"),HttpStatus.BAD_REQUEST);
 		} catch (ExistingUsernameException e) {

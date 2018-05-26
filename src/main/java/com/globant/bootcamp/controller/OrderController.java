@@ -42,7 +42,7 @@ public class OrderController {
 		try {
 			Order newOrder = this.orderService.createOrder(currentUser.getUser(), sp,request.getPaymentMethodId(), request.getDeliverMethodId());
 			this.cartService.clearCart(currentUser.getUser());
-			return new ResponseEntity<>(new OrderResponse(newOrder),HttpStatus.ACCEPTED);
+			return new ResponseEntity<>(new OrderResponse(newOrder),HttpStatus.OK);
 		} catch (BadRequestException e) {
 			return new ResponseEntity<>(new ApiResponse(false,"Wrong parameters"),HttpStatus.BAD_REQUEST);
 		} catch (EmptyCartException e) {

@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 	@RequestMapping(value = "/{url}", method = RequestMethod.GET, produces = "application/json") public ResponseEntity<?> getProductByName(
 			@PathVariable String url) {
 		try {
-			return new ResponseEntity<>(new ProductResponse(this.productService.getProductByUrl(url)),HttpStatus.ACCEPTED);
+			return new ResponseEntity<>(new ProductResponse(this.productService.getProductByUrl(url)),HttpStatus.OK);
 		} catch (ResourceNotFoundException e) {
 			return new ResponseEntity<>(new ApiResponse(false,"The product doesn't exists"),HttpStatus.NOT_FOUND);
 		}
@@ -42,7 +42,7 @@ import java.util.stream.Collectors;
 			@PathVariable String url) {
 		try {
 			return new ResponseEntity<>(this.productService.getProductsByCategoryUrl(url).stream().map(
-					ProductResponse::new).collect(Collectors.toList()), HttpStatus.ACCEPTED);
+					ProductResponse::new).collect(Collectors.toList()), HttpStatus.OK);
 		} catch (ResourceNotFoundException e) {
 			return new ResponseEntity<>(new ApiResponse(false,"The category doesn't exists"),HttpStatus.NOT_FOUND);
 		}

@@ -15,7 +15,6 @@ import java.util.List;
 	@NotEmpty @Column(name = "name") private String name;
 	@NotEmpty @Column(name = "url") private String url;
 	@NotNull @Column(name = "price") private double price;
-	@Column(name = "stock") private int stock;
 	@ManyToMany(cascade = { CascadeType.PERSIST,
 			CascadeType.MERGE }) @JoinTable(name = "category_product", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id")) private List<Category> categories;
 }
