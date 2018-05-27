@@ -46,10 +46,9 @@ import java.util.Optional;
 		Optional<ProductLine> opProduct = productList.stream().filter(x -> x.getProduct().getId().equals(p.getId())).findFirst();
 		if(opProduct.isPresent()){
 			opProduct.get().setQty(opProduct.get().getQty() + qty);
-		}else{
+		}else if(qty != 0){
 			this.productList.add(new ProductLine(p,qty,this));
 		}
-
 	}
 
 	/**

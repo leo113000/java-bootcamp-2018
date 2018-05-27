@@ -4,10 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.Value;
 
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
 public class OrderRequest {
-	private Long paymentMethodId;
-	private Long deliverMethodId;
+	@NotNull private Long paymentMethodId;
+	@NotNull private Long deliverMethodId;
 }

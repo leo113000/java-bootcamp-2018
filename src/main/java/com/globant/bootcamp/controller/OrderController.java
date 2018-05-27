@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,7 +38,7 @@ public class OrderController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<?> createOrder (@CurrentUser UserCredentials currentUser,@ModelAttribute OrderRequest request) {
+	public ResponseEntity<?> createOrder (@CurrentUser UserCredentials currentUser,@Valid @ModelAttribute OrderRequest request) {
 		Cart sp = this.cartService.getCart(currentUser.getUser());
 		try {
 			Order newOrder = this.orderService.createOrder(currentUser.getUser(), sp,request.getPaymentMethodId(), request.getDeliverMethodId());

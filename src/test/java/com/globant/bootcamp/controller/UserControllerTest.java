@@ -53,8 +53,6 @@ public class UserControllerTest {
 	@Autowired
 	UserController userController;
 
-
-
 	@Autowired
 	private WebApplicationContext context;
 
@@ -147,14 +145,4 @@ public class UserControllerTest {
 				.param("password","1234"))
 				.andDo(print()).andExpect(status().is4xxClientError());
 	}
-
-	private String trim (String str, String prefix, String suffix)
-	{
-		int indexOfLast = str.lastIndexOf(suffix);
-
-		str = str.substring(0, indexOfLast);
-
-		return str.replaceFirst(prefix, "");
-	}
-
 }

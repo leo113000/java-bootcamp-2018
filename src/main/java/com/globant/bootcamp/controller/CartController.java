@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController @RequestMapping("/cart") public class CartController {
 
 	@Autowired
@@ -36,10 +38,10 @@ import org.springframework.web.bind.annotation.*;
 
 	@PreAuthorize("hasAuthority('USER')")
 	@RequestMapping(method = RequestMethod.POST, produces = "application/json") public ResponseEntity<?> addProductToCart(
-			@ModelAttribute ProductCartRequest request, @CurrentUser UserCredentials currentUser) {
+			@Valid @ModelAttribute ProductCartRequest request, @CurrentUser UserCredentials currentUser) {
 		try {
 			CartResponse cartResponse = new CartResponse(cartService.addProduct(request.getProductId(),request.getQty(),currentUser.getUser()));
-			return new ResponseEntity<>(cartResponse,HttpStatus.ACCEPTED);
+			return new ResponseEntity<>(cartResponse,HttpStatus.OK);
 		} catch (ResourceNotFoundException e) {
 			return new ResponseEntity<>(new ApiResponse(false,"That product's id doesn't exists"),HttpStatus.NOT_FOUND);
 		}
@@ -53,11 +55,11 @@ import org.springframework.web.bind.annotation.*;
 	}
 
 	@PreAuthorize("hasAuthority('USER')")
-	@RequestMapping(value = "/{productId}", method = RequestMethod.PUT, produces = "application/json") public ResponseEntity<?> updateProductLine(
-			@ModelAttribute ProductCartRequest request, @CurrentUser UserCredentials currentUser) {
+	@RequestMapping( method = RequestMethod.PUT, produces = "application/json") public ResponseEntity<?> updateProductLine(
+			@Valid @ModelAttribute ProductCartRequest request, @CurrentUser UserCredentials currentUser) {
 		try {
 			CartResponse cartResponse = new CartResponse(this.cartService.updateLineProduct(request.getProductId(), request.getQty(), currentUser.getUser()));
-			return new ResponseEntity<>(cartResponse,HttpStatus.ACCEPTED);
+			return new ResponseEntity<>(cartResponse,HttpStatus.OK);
 		} catch (ResourceNotFoundException e) {
 			return new ResponseEntity<>(new ApiResponse(false,"That product's id doesn't exists"),HttpStatus.NOT_FOUND);
 		}
@@ -65,7 +67,7 @@ import org.springframework.web.bind.annotation.*;
 
 	@PreAuthorize("hasAuthority('USER')")
 	@RequestMapping(value = "/{productId}", method = RequestMethod.DELETE, produces = "application/json") public CartResponse removeProduct(
-			@ModelAttribute ProductCartRequest request, @CurrentUser UserCredentials currentUser) {
+			@Valid @ModelAttribute ProductCartRequest request, @CurrentUser UserCredentials currentUser) {
 		return new CartResponse(this.cartService.removeProduct(request.getProductId(), currentUser.getUser()));
 	}
 
