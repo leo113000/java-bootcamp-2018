@@ -22,13 +22,12 @@ import javax.validation.Valid;
 
 @RestController public class UserController {
 
-	@Autowired
-	AuthenticationManager authenticationManager;
+	@Autowired private AuthenticationManager authenticationManager;
 
-	@Autowired UserService userService;
+	@Autowired private UserService userService;
 
 
-	@Autowired JWTTokenProvider tokenProvider;
+	@Autowired private JWTTokenProvider tokenProvider;
 
 
 	@PostMapping("/login")
