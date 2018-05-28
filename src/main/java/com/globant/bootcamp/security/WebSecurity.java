@@ -76,6 +76,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and()
 			.authorizeRequests()
+			.antMatchers("/swagger-resources/**").permitAll()
 			.antMatchers(REGISTER_ROUTE).permitAll()
 			.antMatchers(LOGIN_ROUTE).permitAll()
 			.antMatchers("/products/**").permitAll()
@@ -87,4 +88,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
 	}
 
+	@Override public void configure(org.springframework.security.config.annotation.web.builders.WebSecurity web) throws Exception {
+		web.ignoring().antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security", "/swagger-ui.html", "/webjars/**");
+	}
 }
