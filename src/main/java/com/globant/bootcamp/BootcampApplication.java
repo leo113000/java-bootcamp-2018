@@ -6,12 +6,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-@SpringBootApplication
-@EnableSwagger2
-public class BootcampApplication {
+@SpringBootApplication @EnableSwagger2 public class BootcampApplication {
 
-	@Bean
-	public BCryptPasswordEncoder bCryptPasswordEncoder() {
+	@Bean public BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 

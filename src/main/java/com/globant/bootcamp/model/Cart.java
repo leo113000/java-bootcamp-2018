@@ -14,11 +14,9 @@ import java.util.Optional;
 	@Getter @Setter @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "id") private Long id;
 	@Getter @Setter @OneToOne @JoinColumn(name = "user_id") private User user;
 
-	@Getter @Setter @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER) private List<ProductLine> productList;
+	@Getter @Setter @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER) private List<CartLine> productList;
 
-	@Setter
-	@Column(name = "total")
-	private double total;
+	@Setter @Column(name = "total") private double total;
 
 	public double getTotal() {
 		AtomicDouble atomicTotal = new AtomicDouble();
@@ -26,7 +24,6 @@ import java.util.Optional;
 		this.setTotal(atomicTotal.get());
 		return this.total;
 	}
-
 
 	/**
 	 * Constructor with params
@@ -43,11 +40,11 @@ import java.util.Optional;
 	 * @param qty quantity
 	 */
 	public void addProduct(Product p, int qty) {
-		Optional<ProductLine> opProduct = productList.stream().filter(x -> x.getProduct().getId().equals(p.getId())).findFirst();
-		if(opProduct.isPresent()){
+		Optional<CartLine> opProduct = productList.stream().filter(x -> x.getProduct().getId().equals(p.getId())).findFirst();
+		if (opProduct.isPresent()) {
 			opProduct.get().setQty(opProduct.get().getQty() + qty);
-		}else if(qty != 0){
-			this.productList.add(new ProductLine(p,qty,this));
+		} else if (qty != 0) {
+			this.productList.add(new CartLine(p, qty, this));
 		}
 	}
 

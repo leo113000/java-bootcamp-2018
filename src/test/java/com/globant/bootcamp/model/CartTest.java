@@ -26,14 +26,14 @@ import static org.mockito.Mockito.when;
 	@Test public void givenAShoppingCartWithProductsWhenGetAllTheProductsThenReturnAListOfProducts() {
 		Product a = mock(Product.class);
 		Product b = mock(Product.class);
-		when(a.getId()).thenReturn((long)1);
-		when(b.getId()).thenReturn((long)2);
-		cart.addProduct(a,1);
-		cart.addProduct(b,4);
-		Iterator<ProductLine> iter = cart.getProductList().iterator();
-		ProductLine lineA = iter.next();
-		ProductLine lineB = iter.next();
-		assertEquals(a,lineA.getProduct());
+		when(a.getId()).thenReturn((long) 1);
+		when(b.getId()).thenReturn((long) 2);
+		cart.addProduct(a, 1);
+		cart.addProduct(b, 4);
+		Iterator<CartLine> iter = cart.getProductList().iterator();
+		CartLine lineA = iter.next();
+		CartLine lineB = iter.next();
+		assertEquals(a, lineA.getProduct());
 		assertEquals(1, lineA.getQty());
 		assertEquals(b, lineB.getProduct());
 		assertEquals(4, lineB.getQty());
@@ -41,7 +41,7 @@ import static org.mockito.Mockito.when;
 
 	@Test public void givenACartWithProductsWhenCallEmptyMethodThenTheCartIsEmpty() {
 		Product a = mock(Product.class);
-		cart.addProduct(a,45);
+		cart.addProduct(a, 45);
 		assertFalse(cart.getProductList().isEmpty());
 		cart.clear();
 		assertTrue(cart.getProductList().isEmpty());
@@ -54,39 +54,35 @@ import static org.mockito.Mockito.when;
 		Long id = (long) 1;
 		when(a.getId()).thenReturn(id);
 
-		cart.addProduct(a,21);
-		cart.addProduct(b,21);
+		cart.addProduct(a, 21);
+		cart.addProduct(b, 21);
 
 		cart.removeProductById(id);
 
 		assertEquals(1, cart.getProductList().size());
-		assertNull(cart.getProductList().stream().filter(x ->
-				x.getProduct().equals(a))
-				.findFirst().orElse(null));
+		assertNull(cart.getProductList().stream().filter(x -> x.getProduct().equals(a)).findFirst().orElse(null));
 	}
 
-	 @Test
-	 public void whenAddTheSameProductTwiceThenUpdateTheQty(){
-		 Product a = mock(Product.class);
-		 Product b = mock(Product.class);
-		 when(a.getId()).thenReturn((long)1);
-		 when(b.getId()).thenReturn((long)1);
-		 cart.addProduct(a,1);
-		 cart.addProduct(b,4);
-		 assertEquals(1,this.cart.getProductList().size());
-		 assertEquals(5,this.cart.getProductList().get(0).getQty());
-	 }
+	@Test public void whenAddTheSameProductTwiceThenUpdateTheQty() {
+		Product a = mock(Product.class);
+		Product b = mock(Product.class);
+		when(a.getId()).thenReturn((long) 1);
+		when(b.getId()).thenReturn((long) 1);
+		cart.addProduct(a, 1);
+		cart.addProduct(b, 4);
+		assertEquals(1, this.cart.getProductList().size());
+		assertEquals(5, this.cart.getProductList().get(0).getQty());
+	}
 
-	@Test
-	public void givenACartWithElementsWhenGetTheTotalThenReturnTheAdditionOfAllTheProductLines(){
+	@Test public void givenACartWithElementsWhenGetTheTotalThenReturnTheAdditionOfAllTheProductLines() {
 		Product a = mock(Product.class);
 		Product b = mock(Product.class);
 
 		when(a.getPrice()).thenReturn(10.0);
 		when(b.getPrice()).thenReturn(10.0);
 
-		cart.addProduct(a,10);
-		cart.addProduct(b,10);
+		cart.addProduct(a, 10);
+		cart.addProduct(b, 10);
 
 		cart.getTotal();
 

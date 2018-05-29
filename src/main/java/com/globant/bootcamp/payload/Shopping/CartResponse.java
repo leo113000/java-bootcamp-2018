@@ -1,14 +1,12 @@
 package com.globant.bootcamp.payload.Shopping;
 
 import com.globant.bootcamp.model.Cart;
-import com.globant.bootcamp.payload.Shopping.LineResponse;
 import lombok.Getter;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Getter
-public class CartResponse {
+@Getter public class CartResponse {
 
 	private String username;
 	private double total;

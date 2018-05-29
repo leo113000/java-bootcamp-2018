@@ -12,13 +12,10 @@ import java.util.Date;
 /**
  * This class handles the generation and validation of JWT tokens
  */
-@Component
-public class JWTTokenProvider {
-	@Value("${jwt.secret}")
-	private String jwtSecret;
+@Component public class JWTTokenProvider {
+	@Value("${jwt.secret}") private String jwtSecret;
 
-	@Value("${jwt.expirationInMs}")
-	private int jwtExpirationInMs;
+	@Value("${jwt.expirationInMs}") private int jwtExpirationInMs;
 
 	public String generateToken(Authentication authentication) {
 
@@ -27,19 +24,12 @@ public class JWTTokenProvider {
 		Date now = new Date();
 		Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
 
-		return Jwts.builder()
-				.setSubject(Long.toString(user.getId()))
-				.setIssuedAt(new Date())
-				.setExpiration(expiryDate)
-				.signWith(SignatureAlgorithm.HS512, jwtSecret)
-				.compact();
+		return Jwts.builder().setSubject(Long.toString(user.getId())).setIssuedAt(new Date()).setExpiration(expiryDate)
+				.signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
 	}
 
 	public Long getUserIdFromJWT(String token) {
-		Claims claims = Jwts.parser()
-				.setSigningKey(jwtSecret)
-				.parseClaimsJws(token)
-				.getBody();
+		Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
 
 		return Long.parseLong(claims.getSubject());
 	}
@@ -49,7 +39,7 @@ public class JWTTokenProvider {
 		try {
 			Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
 			result = true;
-		} catch (Exception e){
+		} catch (Exception e) {
 			System.err.println("Error with token");
 		}
 		return result;

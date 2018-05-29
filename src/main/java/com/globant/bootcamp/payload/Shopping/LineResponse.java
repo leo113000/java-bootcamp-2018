@@ -1,21 +1,20 @@
 package com.globant.bootcamp.payload.Shopping;
 
+import com.globant.bootcamp.model.CartLine;
 import com.globant.bootcamp.model.OrderLine;
-import com.globant.bootcamp.model.ProductLine;
 import lombok.Getter;
 
-@Getter
-public class LineResponse {
+@Getter public class LineResponse {
 	private Long productId;
 	private String productName;
 	private int quantity;
 	private double value;
 
-	public LineResponse(ProductLine productLineModel) {
-		this.productId = productLineModel.getProduct().getId();
-		this.productName = productLineModel.getProduct().getName();
-		this.quantity = productLineModel.getQty();
-		this.value = productLineModel.getSubtotal();
+	public LineResponse(CartLine cartLineModel) {
+		this.productId = cartLineModel.getProduct().getId();
+		this.productName = cartLineModel.getProduct().getName();
+		this.quantity = cartLineModel.getQty();
+		this.value = cartLineModel.getSubtotal();
 	}
 
 	public LineResponse(OrderLine orderLineModel) {

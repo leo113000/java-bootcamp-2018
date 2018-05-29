@@ -21,24 +21,23 @@ import java.io.IOException;
  */
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
-	@Autowired
-	private JWTTokenProvider tokenProvider;
+	@Autowired private JWTTokenProvider tokenProvider;
 
-	@Autowired
-	private UserService userService;
+	@Autowired private UserService userService;
 
 	/**
 	 * The filter itself:
 	 * - Validate token
 	 * - Load user details and set it into the Security context
+	 *
 	 * @param request
 	 * @param response
 	 * @param filterChain
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+	@Override protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+			throws ServletException, IOException {
 		try {
 			String jwt = getJwtFromRequest(request);
 
@@ -46,7 +45,8 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 				Long userId = tokenProvider.getUserIdFromJWT(jwt);
 
 				UserDetails userDetails = userService.loadUserById(userId);
-				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null,userDetails.getAuthorities());
+				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null,
+						userDetails.getAuthorities());
 				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
 				SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -60,6 +60,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
 	/**
 	 * This method get the JWT token from the request
+	 *
 	 * @param request
 	 * @return
 	 */

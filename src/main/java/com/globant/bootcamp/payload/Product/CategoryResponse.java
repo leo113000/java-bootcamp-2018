@@ -3,8 +3,7 @@ package com.globant.bootcamp.payload.Product;
 import com.globant.bootcamp.model.Category;
 import lombok.Getter;
 
-@Getter
-public class CategoryResponse {
+@Getter public class CategoryResponse {
 	private String name;
 	private String url;
 

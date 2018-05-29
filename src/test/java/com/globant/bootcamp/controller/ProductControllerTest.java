@@ -9,20 +9,13 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -30,11 +23,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class) @SpringBootTest @AutoConfigureMockMvc public class ProductControllerTest {
 
-	@MockBean
-	private ProductService productService;
+	@MockBean private ProductService productService;
 
-	@Autowired
-	private MockMvc mockMvc;
+	@Autowired private MockMvc mockMvc;
 
 	@Test public void testGetProducts() throws Exception {
 
@@ -70,8 +61,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 		this.mockMvc.perform(get("/products/categories")).andDo(print()).andExpect(status().isOk());
 	}
 
-	@Test
-	public void testGetProductsByCategory() throws Exception {
+	@Test public void testGetProductsByCategory() throws Exception {
 		Product p = new Product();
 		p.setId((long) 1);
 		p.setName("mock");

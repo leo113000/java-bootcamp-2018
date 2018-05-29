@@ -6,7 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@NoArgsConstructor @Entity @Table(name = "order_lines")public class OrderLine {
+@NoArgsConstructor @Entity @Table(name = "order_lines") public class OrderLine {
 	@Getter @Setter @Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "id") private Long id;
 
 	@Getter @Setter @ManyToOne @JoinColumn(name = "product_id") private Product product;
@@ -16,13 +16,13 @@ import javax.persistence.*;
 
 	@Getter @Setter @ManyToOne @JoinColumn(name = "order_id") private Order order;
 
-	public OrderLine(Product product, int qty,Order order) {
+	public OrderLine(Product product, int qty, Order order) {
 		this.product = product;
 		this.qty = qty;
 		this.order = order;
 	}
 
-	public double getSubtotal(){
+	public double getSubtotal() {
 		this.subtotal = product.getPrice() * qty;
 		return this.subtotal;
 	}

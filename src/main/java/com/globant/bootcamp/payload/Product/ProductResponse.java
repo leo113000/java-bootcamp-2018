@@ -8,8 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Getter
-public class ProductResponse {
+@Getter public class ProductResponse {
 	private Long productId;
 	private String url;
 	private String name;
@@ -21,6 +20,8 @@ public class ProductResponse {
 		this.url = productModel.getUrl();
 		this.name = productModel.getName();
 		this.price = productModel.getPrice();
-		categories = productModel.getCategories() != null ? productModel.getCategories().stream().map(Category::getName).collect(Collectors.toList()) : new ArrayList<>();
+		categories = productModel.getCategories() != null ?
+				productModel.getCategories().stream().map(Category::getName).collect(Collectors.toList()) :
+				new ArrayList<>();
 	}
 }

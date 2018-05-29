@@ -16,7 +16,6 @@ import java.util.Optional;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -40,38 +39,31 @@ import static org.mockito.Mockito.when;
 		when(mockedProductRepo.findAll()).thenReturn(new ArrayList<>());
 		when(mockedCategoryRepo.findAll()).thenReturn(new ArrayList<>());
 		when(mockedProductRepo.findByCategories(c)).thenReturn(new ArrayList<>());
-		this.productService = new ProductService(mockedProductRepo,mockedCategoryRepo);
+		this.productService = new ProductService(mockedProductRepo, mockedCategoryRepo);
 	}
 
-	@Test
-	public void whenGetAllProductsReturnAListOfProducts(){
+	@Test public void whenGetAllProductsReturnAListOfProducts() {
 		assertNotNull(this.productService.getAllProducts());
 	}
 
-	@Test
-	public void whenGetAllCategoriesThenReturnAListOfCategories(){
+	@Test public void whenGetAllCategoriesThenReturnAListOfCategories() {
 		assertNotNull(this.productService.getAllCategories());
 	}
 
-	@Test
-	public void whenSearchByNameThenReturnAProduct(){
-		assertEquals("the-url",this.productService.getProductByUrl("the-url").getUrl());
+	@Test public void whenSearchByNameThenReturnAProduct() {
+		assertEquals("the-url", this.productService.getProductByUrl("the-url").getUrl());
 	}
 
-	@Test
-	public void whenSearchByCategoryThenReturnAListOfProducts(){
+	@Test public void whenSearchByCategoryThenReturnAListOfProducts() {
 		assertNotNull(this.productService.getProductsByCategoryUrl("cat-url"));
 	}
 
-	@Test(expected = ResourceNotFoundException.class)
-	public void whenSearchByNameAProductThatDoesntExistsThenThrowAnException(){
+	@Test(expected = ResourceNotFoundException.class) public void whenSearchByNameAProductThatDoesntExistsThenThrowAnException() {
 		this.productService.getProductByUrl("url-that-not-exists");
 	}
 
-	@Test(expected = ResourceNotFoundException.class)
-	public void whenSearchByACategoryThatDoesntExistsThenThrowAnException(){
+	@Test(expected = ResourceNotFoundException.class) public void whenSearchByACategoryThatDoesntExistsThenThrowAnException() {
 		this.productService.getProductsByCategoryUrl("url-that-not-exists");
 	}
-
 
 }

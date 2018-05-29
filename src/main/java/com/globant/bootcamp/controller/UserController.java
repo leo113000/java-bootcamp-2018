@@ -1,6 +1,5 @@
 package com.globant.bootcamp.controller;
 
-
 import com.globant.bootcamp.exception.ExistingEmailException;
 import com.globant.bootcamp.exception.ExistingUsernameException;
 import com.globant.bootcamp.payload.ApiResponse;
@@ -16,7 +15,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
@@ -26,15 +27,12 @@ import javax.validation.Valid;
 
 	@Autowired private UserService userService;
 
-
 	@Autowired private JWTTokenProvider tokenProvider;
 
+	@PostMapping("/login") public ResponseEntity<?> authenticateUser(@Valid @ModelAttribute LoginRequest request) {
 
-	@PostMapping("/login")
-	public ResponseEntity<?> authenticateUser(@Valid @ModelAttribute LoginRequest request) {
-
-		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+		Authentication authentication = authenticationManager
+				.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -43,16 +41,15 @@ import javax.validation.Valid;
 		return ResponseEntity.ok(new JWTAuthenticationResponse(jwt));
 	}
 
-	@PostMapping("/register")
-	public ResponseEntity<?> registerUser(@Valid @ModelAttribute RegisterRequest request) {
+	@PostMapping("/register") public ResponseEntity<?> registerUser(@Valid @ModelAttribute RegisterRequest request) {
 
 		try {
 			this.userService.register(request.getEmail(), request.getUsername(), request.getPassword());
-			return new ResponseEntity<>(new ApiResponse(true, "User registered successfully"),HttpStatus.OK);
+			return new ResponseEntity<>(new ApiResponse(true, "User registered successfully"), HttpStatus.OK);
 		} catch (ExistingEmailException e) {
-			return new ResponseEntity<>(new ApiResponse(false,"Email already in use"),HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new ApiResponse(false, "Email already in use"), HttpStatus.BAD_REQUEST);
 		} catch (ExistingUsernameException e) {
-			return new ResponseEntity<>(new ApiResponse(false,"Username already in use"),HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new ApiResponse(false, "Username already in use"), HttpStatus.BAD_REQUEST);
 		}
 	}
 }

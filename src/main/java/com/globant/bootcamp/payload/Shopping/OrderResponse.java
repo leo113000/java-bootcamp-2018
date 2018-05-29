@@ -2,12 +2,12 @@ package com.globant.bootcamp.payload.Shopping;
 
 import com.globant.bootcamp.model.Order;
 import lombok.Getter;
+
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Getter
-public class OrderResponse {
+@Getter public class OrderResponse {
 	private String username;
 	private Date date;
 	private double total;

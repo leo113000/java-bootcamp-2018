@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 
 	@Autowired ProductService productService;
 
-
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json") public List<ProductResponse> getProducts() {
 		return this.productService.getAllProducts().stream().map(ProductResponse::new).collect(Collectors.toList());
 	}
@@ -28,9 +27,9 @@ import java.util.stream.Collectors;
 	@RequestMapping(value = "/{url}", method = RequestMethod.GET, produces = "application/json") public ResponseEntity<?> getProductByName(
 			@PathVariable String url) {
 		try {
-			return new ResponseEntity<>(new ProductResponse(this.productService.getProductByUrl(url)),HttpStatus.OK);
+			return new ResponseEntity<>(new ProductResponse(this.productService.getProductByUrl(url)), HttpStatus.OK);
 		} catch (ResourceNotFoundException e) {
-			return new ResponseEntity<>(new ApiResponse(false,"The product doesn't exists"),HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(new ApiResponse(false, "The product doesn't exists"), HttpStatus.NOT_FOUND);
 		}
 	}
 
@@ -41,10 +40,11 @@ import java.util.stream.Collectors;
 	@RequestMapping(value = "/categories/{url}", method = RequestMethod.GET, produces = "application/json") public ResponseEntity<?> getProductsByCategory(
 			@PathVariable String url) {
 		try {
-			return new ResponseEntity<>(this.productService.getProductsByCategoryUrl(url).stream().map(
-					ProductResponse::new).collect(Collectors.toList()), HttpStatus.OK);
+			return new ResponseEntity<>(
+					this.productService.getProductsByCategoryUrl(url).stream().map(ProductResponse::new).collect(Collectors.toList()),
+					HttpStatus.OK);
 		} catch (ResourceNotFoundException e) {
-			return new ResponseEntity<>(new ApiResponse(false,"The category doesn't exists"),HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(new ApiResponse(false, "The category doesn't exists"), HttpStatus.NOT_FOUND);
 		}
 	}
 
