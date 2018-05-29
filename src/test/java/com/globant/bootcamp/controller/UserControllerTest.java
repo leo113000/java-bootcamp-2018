@@ -38,6 +38,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 		userController.registerUser(request);
 	}
 
+	@Test public void testWelcome() throws Exception {
+		this.mockMvc.perform(get("/")).andDo(print()).andExpect(status().isOk());
+	}
+
 	@Test public void testRegister() throws Exception {
 		this.mockMvc.perform(post("/register").param("email", "leox@yahoo.com").param("username", "leo2").param("password", "1234"))
 				.andDo(print()).andExpect(status().isOk());

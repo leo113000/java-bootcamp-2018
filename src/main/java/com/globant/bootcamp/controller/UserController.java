@@ -15,6 +15,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,7 +30,11 @@ import javax.validation.Valid;
 
 	@Autowired private JWTTokenProvider tokenProvider;
 
-	@PostMapping("/login") public ResponseEntity<?> authenticateUser(@Valid @ModelAttribute LoginRequest request) {
+	@GetMapping("/") public ResponseEntity welcome(){
+		return new ResponseEntity<>(new ApiResponse(true,"Welcome to the Shopping Cart API"),HttpStatus.OK);
+	}
+
+	@PostMapping("/login") public ResponseEntity authenticateUser(@Valid @ModelAttribute LoginRequest request) {
 
 		Authentication authentication = authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
@@ -41,7 +46,7 @@ import javax.validation.Valid;
 		return ResponseEntity.ok(new JWTAuthenticationResponse(jwt));
 	}
 
-	@PostMapping("/register") public ResponseEntity<?> registerUser(@Valid @ModelAttribute RegisterRequest request) {
+	@PostMapping("/register") public ResponseEntity registerUser(@Valid @ModelAttribute RegisterRequest request) {
 
 		try {
 			this.userService.register(request.getEmail(), request.getUsername(), request.getPassword());

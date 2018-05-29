@@ -50,7 +50,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 	@Override protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests().antMatchers("/swagger-resources/**")
-				.permitAll().antMatchers(REGISTER_ROUTE).permitAll().antMatchers(LOGIN_ROUTE).permitAll().antMatchers("/products/**")
+				.permitAll().antMatchers("/").permitAll().antMatchers(REGISTER_ROUTE).permitAll().antMatchers(LOGIN_ROUTE).permitAll().antMatchers("/products/**")
 				.permitAll().anyRequest().authenticated();
 
 		// Add custom JWT security filter
