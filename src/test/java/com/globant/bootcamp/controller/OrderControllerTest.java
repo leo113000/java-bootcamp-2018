@@ -4,7 +4,7 @@ import com.globant.bootcamp.model.DeliverMethod;
 import com.globant.bootcamp.model.PaymentMethod;
 import com.globant.bootcamp.model.Product;
 import com.globant.bootcamp.model.Status;
-import com.globant.bootcamp.dto.Auth.RegisterRequest;
+import com.globant.bootcamp.payload.Auth.RegisterRequest;
 import com.globant.bootcamp.persistence.DeliverMethodRepository;
 import com.globant.bootcamp.persistence.PaymentMethodRepository;
 import com.globant.bootcamp.persistence.ProductRepository;

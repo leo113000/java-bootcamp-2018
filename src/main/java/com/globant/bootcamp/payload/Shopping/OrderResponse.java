@@ -1,4 +1,4 @@
-package com.globant.bootcamp.dto.Shopping;
+package com.globant.bootcamp.payload.Shopping;
 
 import com.globant.bootcamp.model.Order;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.globant.bootcamp.dto.Shopping;
+package com.globant.bootcamp.payload.Shopping;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -2,10 +2,10 @@ package com.globant.bootcamp.controller;
 
 import com.globant.bootcamp.exception.ExistingEmailException;
 import com.globant.bootcamp.exception.ExistingUsernameException;
-import com.globant.bootcamp.dto.ApiResponse;
-import com.globant.bootcamp.dto.Auth.JWTAuthenticationResponse;
-import com.globant.bootcamp.dto.Auth.LoginRequest;
-import com.globant.bootcamp.dto.Auth.RegisterRequest;
+import com.globant.bootcamp.payload.ApiResponse;
+import com.globant.bootcamp.payload.Auth.JWTAuthenticationResponse;
+import com.globant.bootcamp.payload.Auth.LoginRequest;
+import com.globant.bootcamp.payload.Auth.RegisterRequest;
 import com.globant.bootcamp.security.JWTTokenProvider;
 import com.globant.bootcamp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

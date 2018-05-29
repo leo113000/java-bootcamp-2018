@@ -1,4 +1,4 @@
-package com.globant.bootcamp.dto.Auth;
+package com.globant.bootcamp.payload.Auth;
 
 import lombok.Getter;
 import lombok.Setter;

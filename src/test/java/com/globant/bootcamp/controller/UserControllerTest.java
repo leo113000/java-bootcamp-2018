@@ -1,6 +1,6 @@
 package com.globant.bootcamp.controller;
 
-import com.globant.bootcamp.dto.Auth.RegisterRequest;
+import com.globant.bootcamp.payload.Auth.RegisterRequest;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
