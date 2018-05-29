@@ -1,4 +1,4 @@
-package com.globant.bootcamp.payload.Product;
+package com.globant.bootcamp.dto.Product;
 
 import com.globant.bootcamp.model.Category;
 import lombok.Getter;

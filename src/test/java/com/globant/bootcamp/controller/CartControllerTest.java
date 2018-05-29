@@ -1,7 +1,7 @@
 package com.globant.bootcamp.controller;
 
 import com.globant.bootcamp.model.Product;
-import com.globant.bootcamp.payload.Auth.RegisterRequest;
+import com.globant.bootcamp.dto.Auth.RegisterRequest;
 import com.globant.bootcamp.persistence.ProductRepository;
 import org.json.JSONObject;
 import org.junit.Before;

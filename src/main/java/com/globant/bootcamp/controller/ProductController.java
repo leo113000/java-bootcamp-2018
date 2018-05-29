@@ -1,9 +1,9 @@
 package com.globant.bootcamp.controller;
 
 import com.globant.bootcamp.exception.ResourceNotFoundException;
-import com.globant.bootcamp.payload.ApiResponse;
-import com.globant.bootcamp.payload.Product.CategoryResponse;
-import com.globant.bootcamp.payload.Product.ProductResponse;
+import com.globant.bootcamp.dto.ApiResponse;
+import com.globant.bootcamp.dto.Product.CategoryResponse;
+import com.globant.bootcamp.dto.Product.ProductResponse;
 import com.globant.bootcamp.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

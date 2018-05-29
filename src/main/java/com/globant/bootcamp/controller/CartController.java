@@ -1,9 +1,9 @@
 package com.globant.bootcamp.controller;
 
 import com.globant.bootcamp.exception.ResourceNotFoundException;
-import com.globant.bootcamp.payload.ApiResponse;
-import com.globant.bootcamp.payload.Shopping.CartResponse;
-import com.globant.bootcamp.payload.Shopping.ProductCartRequest;
+import com.globant.bootcamp.dto.ApiResponse;
+import com.globant.bootcamp.dto.Shopping.CartResponse;
+import com.globant.bootcamp.dto.Shopping.ProductCartRequest;
 import com.globant.bootcamp.security.CurrentUser;
 import com.globant.bootcamp.security.UserCredentials;
 import com.globant.bootcamp.service.CartService;
