@@ -2,8 +2,8 @@ package com.globant.bootcamp.controller;
 
 import com.globant.bootcamp.exception.ResourceNotFoundException;
 import com.globant.bootcamp.payload.ApiResponse;
-import com.globant.bootcamp.payload.Product.CategoryResponse;
-import com.globant.bootcamp.payload.Product.ProductResponse;
+import com.globant.bootcamp.payload.product.CategoryResponse;
+import com.globant.bootcamp.payload.product.ProductResponse;
 import com.globant.bootcamp.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 		return this.productService.getAllProducts().stream().map(ProductResponse::new).collect(Collectors.toList());
 	}
 
-	@RequestMapping(value = "/{url}", method = RequestMethod.GET, produces = "application/json") public ResponseEntity<?> getProductByName(
+	@RequestMapping(value = "/{url}", method = RequestMethod.GET, produces = "application/json") public ResponseEntity getProductByName(
 			@PathVariable String url) {
 		try {
 			return new ResponseEntity<>(new ProductResponse(this.productService.getProductByUrl(url)), HttpStatus.OK);
@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 		return this.productService.getAllCategories().stream().map(CategoryResponse::new).collect(Collectors.toList());
 	}
 
-	@RequestMapping(value = "/categories/{url}", method = RequestMethod.GET, produces = "application/json") public ResponseEntity<?> getProductsByCategory(
+	@RequestMapping(value = "/categories/{url}", method = RequestMethod.GET, produces = "application/json") public ResponseEntity getProductsByCategory(
 			@PathVariable String url) {
 		try {
 			return new ResponseEntity<>(

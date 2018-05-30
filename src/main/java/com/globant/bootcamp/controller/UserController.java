@@ -3,9 +3,9 @@ package com.globant.bootcamp.controller;
 import com.globant.bootcamp.exception.ExistingEmailException;
 import com.globant.bootcamp.exception.ExistingUsernameException;
 import com.globant.bootcamp.payload.ApiResponse;
-import com.globant.bootcamp.payload.Auth.JWTAuthenticationResponse;
-import com.globant.bootcamp.payload.Auth.LoginRequest;
-import com.globant.bootcamp.payload.Auth.RegisterRequest;
+import com.globant.bootcamp.payload.auth.JWTAuthenticationResponse;
+import com.globant.bootcamp.payload.auth.LoginRequest;
+import com.globant.bootcamp.payload.auth.RegisterRequest;
 import com.globant.bootcamp.security.JWTTokenProvider;
 import com.globant.bootcamp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ import javax.validation.Valid;
 	@Autowired private JWTTokenProvider tokenProvider;
 
 	@GetMapping("/") public ResponseEntity welcome(){
-		return new ResponseEntity<>(new ApiResponse(true,"Welcome to the Shopping Cart API"),HttpStatus.OK);
+		return new ResponseEntity<>(new ApiResponse(true,"Welcome to the shopping Cart API"),HttpStatus.OK);
 	}
 
 	@PostMapping("/login") public ResponseEntity authenticateUser(@Valid @ModelAttribute LoginRequest request) {

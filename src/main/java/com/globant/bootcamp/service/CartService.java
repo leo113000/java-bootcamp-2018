@@ -27,7 +27,7 @@ import org.springframework.stereotype.Service;
 
 	/**
 	 * @param user
-	 * @return Shopping Cart
+	 * @return shopping Cart
 	 */
 	public Cart getCart(User user) {
 		Cart cart = this.cartRepository.findByUserId(user.getId());

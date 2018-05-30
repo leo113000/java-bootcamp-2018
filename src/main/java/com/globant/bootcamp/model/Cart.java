@@ -36,7 +36,7 @@ import java.util.Optional;
 	}
 
 	/**
-	 * @param p   Product
+	 * @param p   product
 	 * @param qty quantity
 	 */
 	public void addProduct(Product p, int qty) {
@@ -49,13 +49,11 @@ import java.util.Optional;
 	}
 
 	/**
-	 * @param id of the Product
+	 * @param id of the product
 	 * @return void
 	 */
 	public void removeProductById(Long id) {
-		this.productList.removeIf(x -> {
-			return x.getProduct().getId().equals(id);
-		});
+		this.productList.removeIf( x -> x.getProduct().getId().equals(id) );
 	}
 
 	/**

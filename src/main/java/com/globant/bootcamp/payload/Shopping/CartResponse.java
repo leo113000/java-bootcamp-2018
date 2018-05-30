@@ -1,4 +1,4 @@
-package com.globant.bootcamp.payload.Shopping;
+package com.globant.bootcamp.payload.shopping;
 
 import com.globant.bootcamp.model.Cart;
 import lombok.Getter;

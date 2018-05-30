@@ -5,8 +5,8 @@ import com.globant.bootcamp.exception.EmptyCartException;
 import com.globant.bootcamp.model.Cart;
 import com.globant.bootcamp.model.Order;
 import com.globant.bootcamp.payload.ApiResponse;
-import com.globant.bootcamp.payload.Shopping.OrderRequest;
-import com.globant.bootcamp.payload.Shopping.OrderResponse;
+import com.globant.bootcamp.payload.shopping.OrderRequest;
+import com.globant.bootcamp.payload.shopping.OrderResponse;
 import com.globant.bootcamp.security.CurrentUser;
 import com.globant.bootcamp.security.UserCredentials;
 import com.globant.bootcamp.service.CartService;
@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
 				.collect(Collectors.toList());
 	}
 
-	@RequestMapping(method = RequestMethod.POST, produces = "application/json") public ResponseEntity<?> createOrder(
+	@RequestMapping(method = RequestMethod.POST, produces = "application/json") public ResponseEntity createOrder(
 			@CurrentUser UserCredentials currentUser, @Valid @ModelAttribute OrderRequest request) {
 		Cart sp = this.cartService.getCart(currentUser.getUser());
 		try {

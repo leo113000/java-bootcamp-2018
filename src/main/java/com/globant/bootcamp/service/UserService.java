@@ -41,6 +41,6 @@ import org.springframework.transaction.annotation.Transactional;
 			throw new ExistingEmailException();
 		}
 
-		User user = userRepository.save(new User(email, username, passwordEncoder.encode(password)));
+		userRepository.save(new User(email, username, passwordEncoder.encode(password)));
 	}
 }

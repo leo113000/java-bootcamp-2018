@@ -1,4 +1,4 @@
-package com.globant.bootcamp.payload.Auth;
+package com.globant.bootcamp.payload.auth;
 
 import lombok.Getter;
 import lombok.Setter;

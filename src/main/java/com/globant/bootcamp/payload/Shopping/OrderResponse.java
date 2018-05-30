@@ -1,4 +1,4 @@
-package com.globant.bootcamp.payload.Shopping;
+package com.globant.bootcamp.payload.shopping;
 
 import com.globant.bootcamp.model.Order;
 import lombok.Getter;
@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
 	private String username;
 	private Date date;
 	private double total;
-	private String payment_method;
-	private String deliver_method;
+	private String paymentMethod;
+	private String deliverMethod;
 	private String status;
 	private List<LineResponse> lineResponseList;
 
@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
 		this.username = orderModel.getUser().getUsername();
 		this.date = orderModel.getDate();
 		this.total = orderModel.getTotal();
-		this.payment_method = orderModel.getPaymentMethod().getName();
-		this.deliver_method = orderModel.getDeliverMethod().getName();
+		this.paymentMethod = orderModel.getPaymentMethod().getName();
+		this.deliverMethod = orderModel.getDeliverMethod().getName();
 		this.status = orderModel.getStatus().getName();
 		this.lineResponseList = orderModel.getOrderLines().stream().map(LineResponse::new).collect(Collectors.toList());
 	}

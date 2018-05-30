@@ -2,8 +2,8 @@ package com.globant.bootcamp.controller;
 
 import com.globant.bootcamp.exception.ResourceNotFoundException;
 import com.globant.bootcamp.payload.ApiResponse;
-import com.globant.bootcamp.payload.Shopping.CartResponse;
-import com.globant.bootcamp.payload.Shopping.ProductCartRequest;
+import com.globant.bootcamp.payload.shopping.CartResponse;
+import com.globant.bootcamp.payload.shopping.ProductCartRequest;
 import com.globant.bootcamp.security.CurrentUser;
 import com.globant.bootcamp.security.UserCredentials;
 import com.globant.bootcamp.service.CartService;
@@ -36,7 +36,7 @@ import javax.validation.Valid;
 		return new CartResponse(cartService.getCart(currentUser.getUser()));
 	}
 
-	@PreAuthorize("hasAuthority('USER')") @RequestMapping(method = RequestMethod.POST, produces = "application/json") public ResponseEntity<?> addProductToCart(
+	@PreAuthorize("hasAuthority('USER')") @RequestMapping(method = RequestMethod.POST, produces = "application/json") public ResponseEntity addProductToCart(
 			@Valid @ModelAttribute ProductCartRequest request, @CurrentUser UserCredentials currentUser) {
 		try {
 			CartResponse cartResponse = new CartResponse(
@@ -53,7 +53,7 @@ import javax.validation.Valid;
 		return new ApiResponse(true, "Cart clear");
 	}
 
-	@PreAuthorize("hasAuthority('USER')") @RequestMapping(method = RequestMethod.PUT, produces = "application/json") public ResponseEntity<?> updateProductLine(
+	@PreAuthorize("hasAuthority('USER')") @RequestMapping(method = RequestMethod.PUT, produces = "application/json") public ResponseEntity updateProductLine(
 			@Valid @ModelAttribute ProductCartRequest request, @CurrentUser UserCredentials currentUser) {
 		try {
 			CartResponse cartResponse = new CartResponse(
